@@ -1,0 +1,30 @@
+<!-- title: Lexicon -->
+<!-- summary: Your project's data dictionary: every event and property you track, what it means, and how it appears in reports. -->
+<p><strong>Lexicon</strong> lists everything your project tracks and lets you document and tidy it, so everyone picking an event in a report knows what it means.</p>
+
+<h2>What's listed</h2>
+<table>
+  <tr><th>Page</th><th>What it holds</th></tr>
+  <tr><td>Events</td><td>Actions users take in your product that you track in Kestrel, with their 30-day volume and how often they are queried.</td></tr>
+  <tr><td>Event Properties</td><td>Details attached to events that you filter and break down by, with an example value and the events that carry each one.</td></tr>
+  <tr><td>Profile Properties</td><td>Attributes on user profiles, with how many users have each one.</td></tr>
+</table>
+<p>Lexicon also holds what you build on top of your data: <a href="/docs/custom-events/">custom events</a>, <a href="/docs/custom-properties/">custom properties</a>, <a href="/docs/saved-metrics/">metrics and behaviors</a>, <a href="/docs/lookup-tables/">lookup tables</a> and <a href="/docs/cohorts/">cohorts</a>.</p>
+<p>Search matches an entry's name or display name. Filters narrow the list by status, owner, tags, verification, and whether an entry is one of yours or one Kestrel tracks automatically.</p>
+
+<h2>Documenting an entry</h2>
+<p>Select an entry to open its side panel. Admins can set a <strong>display name</strong> (shown in reports instead of the raw name), a <strong>description</strong>, <strong>tags</strong>, <strong>platforms</strong>, <strong>owners</strong> and an image.</p>
+
+<h2>Bulk actions</h2>
+<p>Select entries with their checkboxes, then open <strong>Bulk Actions</strong>:</p>
+<table>
+  <tr><th>Action</th><th>What it does</th><th>Role</th></tr>
+  <tr><td>Hide / Make Visible</td><td>Hides an entry from report pickers. Data still arrives and nothing is lost; you can undo it at any time.</td><td>Admin</td></tr>
+  <tr><td>Merge / Unmerge</td><td>Treats two or more events or properties as one in reports — useful when the same thing was tracked under different names.</td><td>Owner</td></tr>
+  <tr><td>Block / Unblock</td><td>Stops new data for an entry from being processed. It can take a few hours to take effect, and <strong>blocked data cannot be recovered</strong>.</td><td>Owner</td></tr>
+  <tr><td>Mark Classified</td><td>Marks a property as sensitive. Only people who have been granted Classified Data Access can see its values, and reports that use it are locked for everyone else.</td><td>Admin</td></tr>
+  <tr><td>Map To / Unmap From Lookup Table</td><td>Connects a property to a <a href="/docs/lookup-tables/">lookup table</a>.</td><td>Admin</td></tr>
+</table>
+
+<h2>Exporting</h2>
+<p><strong>Export CSV</strong> downloads the rows you are looking at — after search and filters — with the columns currently shown.</p>

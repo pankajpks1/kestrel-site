@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Custom events — Kestrel Help Docs</title>
+  <meta name="description" content="Combine or filter existing events into one event you can use in any report.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/" aria-current="page">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Custom events</h1>
+        <p class="lead">Combine or filter existing events into one event you can use in any report.</p>
+<p>A <strong>custom event</strong> is an event you define in Kestrel from events you already track. Use one when several events mean the same thing to you — <em>Signed Up with Google</em> and <em>Signed Up with Email</em> as one <em>Sign Up</em> — or when you want only some occurrences of an event, such as <em>Order Completed</em> where <code>amount</code> is over 1,000.</p>
+<p>Custom events work on all your history straight away and appear in every report's event picker.</p>
+
+<h2>Creating one</h2>
+<ol>
+  <li>Go to <strong>Lexicon › Custom Events</strong> and choose <strong>+ Create Custom Event</strong>, or pick <strong>+ Create New</strong> in a report's event picker.</li>
+  <li>Give it a <strong>Name</strong>.</li>
+  <li>Under <em>Match my custom event when any of the following events happen</em>, add the events. Each one can have its own filters on event properties or user properties.</li>
+  <li>Save. A new custom event is private to you until you share it.</li>
+</ol>
+
+<h2>How it counts</h2>
+<ul>
+  <li>An event is counted when it matches <strong>any</strong> of the listed events (with their filters).</li>
+  <li>An event that matches two of the entries is still counted <strong>once</strong>.</li>
+  <li>User-property filters use each person's current profile.</li>
+</ul>
+
+<h2>Editing and deleting</h2>
+<p>Open the custom event in Lexicon and choose <strong>Edit</strong>. Changes apply to every report that uses it. Delete is inside Edit; reports that used a deleted custom event will show an error until you replace it.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

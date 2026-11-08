@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lexicon — Kestrel Help Docs</title>
+  <meta name="description" content="Your project&#x27;s data dictionary: every event and property you track, what it means, and how it appears in reports.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/" aria-current="page">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Lexicon</h1>
+        <p class="lead">Your project&#x27;s data dictionary: every event and property you track, what it means, and how it appears in reports.</p>
+<p><strong>Lexicon</strong> lists everything your project tracks and lets you document and tidy it, so everyone picking an event in a report knows what it means.</p>
+
+<h2>What's listed</h2>
+<table>
+  <tr><th>Page</th><th>What it holds</th></tr>
+  <tr><td>Events</td><td>Actions users take in your product that you track in Kestrel, with their 30-day volume and how often they are queried.</td></tr>
+  <tr><td>Event Properties</td><td>Details attached to events that you filter and break down by, with an example value and the events that carry each one.</td></tr>
+  <tr><td>Profile Properties</td><td>Attributes on user profiles, with how many users have each one.</td></tr>
+</table>
+<p>Lexicon also holds what you build on top of your data: <a href="/docs/custom-events/">custom events</a>, <a href="/docs/custom-properties/">custom properties</a>, <a href="/docs/saved-metrics/">metrics and behaviors</a>, <a href="/docs/lookup-tables/">lookup tables</a> and <a href="/docs/cohorts/">cohorts</a>.</p>
+<p>Search matches an entry's name or display name. Filters narrow the list by status, owner, tags, verification, and whether an entry is one of yours or one Kestrel tracks automatically.</p>
+
+<h2>Documenting an entry</h2>
+<p>Select an entry to open its side panel. Admins can set a <strong>display name</strong> (shown in reports instead of the raw name), a <strong>description</strong>, <strong>tags</strong>, <strong>platforms</strong>, <strong>owners</strong> and an image.</p>
+
+<h2>Bulk actions</h2>
+<p>Select entries with their checkboxes, then open <strong>Bulk Actions</strong>:</p>
+<table>
+  <tr><th>Action</th><th>What it does</th><th>Role</th></tr>
+  <tr><td>Hide / Make Visible</td><td>Hides an entry from report pickers. Data still arrives and nothing is lost; you can undo it at any time.</td><td>Admin</td></tr>
+  <tr><td>Merge / Unmerge</td><td>Treats two or more events or properties as one in reports — useful when the same thing was tracked under different names.</td><td>Owner</td></tr>
+  <tr><td>Block / Unblock</td><td>Stops new data for an entry from being processed. It can take a few hours to take effect, and <strong>blocked data cannot be recovered</strong>.</td><td>Owner</td></tr>
+  <tr><td>Mark Classified</td><td>Marks a property as sensitive. Only people who have been granted Classified Data Access can see its values, and reports that use it are locked for everyone else.</td><td>Admin</td></tr>
+  <tr><td>Map To / Unmap From Lookup Table</td><td>Connects a property to a <a href="/docs/lookup-tables/">lookup table</a>.</td><td>Admin</td></tr>
+</table>
+
+<h2>Exporting</h2>
+<p><strong>Export CSV</strong> downloads the rows you are looking at — after search and filters — with the columns currently shown.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

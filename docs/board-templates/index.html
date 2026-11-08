@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Board templates — Kestrel Help Docs</title>
+  <meta name="description" content="Start a board from a proven set of reports, mapped to your own events in a few clicks.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/" aria-current="page">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Board templates</h1>
+        <p class="lead">Start a board from a proven set of reports, mapped to your own events in a few clicks.</p>
+<p>A <strong>board template</strong> is a ready-made board of reports for a common question — how a feature launch is going, where an online store loses buyers. You tell the template which of your events and properties to use, and it builds every report from them.</p>
+
+<h2>Templates</h2>
+<table>
+  <tr><th>Template</th><th>It asks for</th></tr>
+  <tr><td>Web Analytics</td><td>Your page-load event and its page-name property.</td></tr>
+  <tr><td>Company KPIs</td><td>Your sign-up event and your <a href="/docs/value-moment/">value moment</a>. Also creates <em>Engaged Users</em> and <em>Driftaway Users</em> cohorts.</td></tr>
+  <tr><td>Marketing KPIs</td><td>Your conversion event, and optionally an activation event.</td></tr>
+  <tr><td>Feature Launch</td><td>The feature's name and launch date, the event that marks its use, and its value moment.</td></tr>
+  <tr><td>Lifecycle Cohort Analysis</td><td>One value moment. Creates New, Retained, Resurrected and Dormant user cohorts for 7, 30 and 90-day periods.</td></tr>
+  <tr><td>Ecommerce</td><td>Events and cart properties — see <a href="#ecommerce">below</a>.</td></tr>
+  <tr><td>AI Company KPIs</td><td>Your AI feature's events (prompt sent, response sent, feedback, errors…) and their cost, token and timing properties. Every input is optional.</td></tr>
+  <tr><td>SaaS Company KPIs</td><td>Account-level (group) data. Kestrel does not support group profiles yet, so this template can't be completed for now.</td></tr>
+</table>
+
+<h2 id="adding-your-events">Adding your events</h2>
+<p>Picking a template opens a <strong>Draft</strong> board with a <strong>Set Up Board</strong> panel beside it. Each line in the panel asks a question — "What is your product's core value moment?" — and you answer it by choosing one of your events or properties. The draft redraws as you go, so you can see each report take shape.</p>
+<p>Templates ask for events rather than guessing them because every product names things differently: your <em>Order Completed</em> might be someone else's <em>Purchase</em> or <em>checkout_success</em>. Mapping them once means every report on the board measures what you actually track.</p>
+<p>When every required line is filled, <strong>Save</strong> builds the board. You can edit any of its reports afterwards like any other report.</p>
+
+<h2 id="ecommerce">The Ecommerce template</h2>
+<p>The Ecommerce board follows the path from browsing to buying: product views, add-to-cart, purchases, revenue by category, and how new visitors convert. It needs both events and properties:</p>
+<ul>
+  <li><strong>Sign Up</strong> and <strong>Product Viewed</strong> events.</li>
+  <li><strong>Purchase</strong>, with its <strong>cart</strong> property and each item's <strong>price</strong>.</li>
+  <li><strong>Add to Cart</strong>, with its cart property and each item's <strong>category</strong>.</li>
+  <li>Optionally, your <strong>ad data</strong> event and its <strong>cost</strong> property, for marketing spend.</li>
+</ul>
+<p>The cart must be a <a href="/docs/list-properties/">list of objects</a> — one object per item, each with keys such as price and category — so the board can count items, sum their prices and break revenue down by category. The panel's <em>Need help setting up this template?</em> card walks through each step.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!-- title: Measurements in Insights -->
+<!-- summary: What each choice in the Measuring menu counts, from unique users to aggregates of a property. -->
+<p>Every metric in an Insights report has a <strong>Measuring</strong> menu below it. It decides what the number on the chart means: how many people, how many events, or a calculation over a property's values. All measurements are exact counts over your data.</p>
+
+<h2>Unique Users</h2>
+<p>The number of distinct people who did the event in each interval. A person who did it ten times on Monday counts once for Monday.</p>
+<p>The ⚙ settings next to it choose how users are aggregated:</p>
+<table>
+  <tr><th>Aggregate by</th><th>What it shows</th></tr>
+  <tr><td>Interval (Default)</td><td>Distinct users in each chart interval (each day, week, month…).</td></tr>
+  <tr><td>Daily Active Users</td><td>Distinct users per day. Day interval only.</td></tr>
+  <tr><td>Weekly Active Users</td><td>Distinct users in the 7 days ending on each point. Day or Week interval.</td></tr>
+  <tr><td>Monthly Active Users</td><td>Distinct users in the 30 days ending on each point. Day, Week or Month interval.</td></tr>
+  <tr><td>Cumulative Users</td><td>Distinct users from the start of the range up to each point. Line chart only.</td></tr>
+</table>
+<p>With a breakdown, <strong>Count Unique Users</strong> decides where a person who appears in several segments is counted: in <em>Every Segment</em> (the default), only in the <em>First Segment</em>, or only in the <em>Last Segment</em> they appeared in.</p>
+
+<h2>Total Events</h2>
+<p>The number of times the event happened. Duplicate events with the same insert ID are counted once.</p>
+
+<h2>Total Sessions</h2>
+<p>The number of sessions in which the event happened, using your project's <a href="/docs/sessions/">session settings</a>.</p>
+
+<h2>Frequency per User</h2>
+<p>How many times each person did the event, then summarised across people: <em>Distribution</em> (how many people did it once, twice, three times…), <em>Average</em>, <em>Median</em>, a <em>Percentile</em> (25th, 75th, 90th, or any level you enter), <em>Minimum</em> or <em>Maximum</em>.</p>
+
+<h2>Aggregate Property</h2>
+<p>A calculation over a number property across every matching event: <em>Sum</em>, <em>Average</em>, <em>Median</em>, <em>Distinct Count</em>, a <em>Percentile</em> (25th, 75th, 90th, 99th or any level), <em>Minimum</em> or <em>Maximum</em>. For example, the Sum of <code>amount</code> on <em>Order Completed</em> is your revenue.</p>
+<p>Events where the property is missing, empty or not a number are skipped — they are not counted as zero.</p>
+
+<h2>Aggregate Property per User</h2>
+<p>Two steps: first each person's own value (Sum, Average, Distinct Count, Minimum or Maximum of the property), then a summary across people (Average, Sum, Distribution, Median, Percentile, Minimum or Maximum). For example, "Average of (Sum <code>amount</code>)" is the average spend per paying user.</p>
+
+<h2>Calculation options</h2>
+<p>Under <strong>Advanced</strong>, a line or column chart can show a <strong>Rolling Average</strong> over 7, 14 or 28 days, or a <strong>Cumulative Sum</strong> that adds each interval to the ones before it.</p>

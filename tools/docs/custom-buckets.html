@@ -1,0 +1,27 @@
+<!-- title: Custom buckets -->
+<!-- summary: Group a breakdown's values into ranges or named groups, automatically or your own way. -->
+<p>Breaking a report down by a property with many values — prices, durations, ages — gives one segment per value, which is hard to read. <strong>Buckets</strong> group those values into ranges (for numbers) or named groups (for text), so the report shows a handful of meaningful segments.</p>
+
+<h2>Automatic buckets for numbers</h2>
+<p>When you break down by a number property and haven't set buckets yourself:</p>
+<ul>
+  <li>With <strong>23 or fewer</strong> distinct values, each value gets its own segment.</li>
+  <li>With <strong>24 or more</strong>, Kestrel groups the values into equal-width ranges such as <code>0 - &lt;20</code>, <code>20 - &lt;40</code> … <code>&gt;= 240</code>. The width is a round number (1, 2 or 5 times a power of ten) chosen so that about a dozen ranges cover most values; anything above the top range goes into the last, open-ended one.</li>
+  <li>Values that aren't numbers appear as <strong>(non-numeric values)</strong>.</li>
+</ul>
+
+<h2>Setting your own number buckets</h2>
+<p>Open the breakdown's ⋮ menu › <strong>Customize Buckets</strong> and choose a tab:</p>
+<table>
+  <tr><th>Tab</th><th>What it does</th></tr>
+  <tr><td>Even</td><td>Equal-sized ranges. Set <em>Min</em>, <em>Max</em> and <em>Size</em> — for example 0, 100 and 10 gives <code>&lt;0</code>, <code>0 - &lt;10</code>, <code>10 - &lt;20</code> … <code>≥100</code>.</td></tr>
+  <tr><td>Varied</td><td>Ranges of your choosing. Enter the boundaries in increasing order — for example 0 and 2 gives <code>&lt;0</code>, <code>0 - &lt;2</code>, <code>&gt;=2</code>.</td></tr>
+  <tr><td>None</td><td>No grouping: one segment per value.</td></tr>
+</table>
+<p>Choose <strong>Apply</strong>. <strong>Reset</strong> returns to the automatic buckets.</p>
+
+<h2>Grouping text values</h2>
+<p>For a text property, <strong>Bucket by…</strong> lets you build named groups: each group lists the values it contains (<em>Is</em> …, <em>Else Is</em> …), and <em>Else remaining values</em> collects everything you haven't listed into one group.</p>
+
+<h2>Grouping dates</h2>
+<p>For a date property, choose the unit each segment covers — from an hour up to a year.</p>

@@ -1,0 +1,21 @@
+<!-- title: Segment limits -->
+<!-- summary: Why a broken-down report shows at most 3,000 segments, which ones you see, and how to reach the rest. -->
+<p>When you break a report down by one or more properties, every distinct combination of values becomes a <strong>segment</strong> — one row in the table and, usually, one line or bar in the chart. A breakdown on a property with many values (user IDs, URLs, search terms) can produce far more segments than anyone can read, so Kestrel shows at most <strong>3,000 segments</strong> per report.</p>
+
+<h2>When you hit the limit</h2>
+<p>If a report reaches 3,000 segments, a notice appears above the table. The numbers you see are still exact — Kestrel never samples or estimates — but segments beyond the first 3,000 are left out of the table and the chart.</p>
+
+<h2>Which segments you see</h2>
+<p>Kestrel keeps the 3,000 largest segments, ranked by the metric's total over the whole date range, largest first. For example, with <em>Total Events</em> broken down by <code>Page URL</code>, you see the 3,000 most-visited URLs in the selected period.</p>
+<ul>
+  <li>For <strong>Frequency per User</strong> metrics, segments are ranked by the measured value.</li>
+  <li>Segments are ranked once for the whole range, so the same segments appear on every day of a line chart.</li>
+</ul>
+
+<h2>Seeing hidden segments</h2>
+<ul>
+  <li><strong>Filter first.</strong> Add a filter that narrows the report — a country, a platform, a date range — and the segments you care about move inside the limit.</li>
+  <li><strong>Break down by fewer properties.</strong> Each extra breakdown multiplies the number of combinations. You can use up to five breakdowns per report.</li>
+  <li><strong>Group values.</strong> For number properties, use <a href="/docs/custom-buckets/">custom buckets</a> to turn thousands of values into a few ranges. For text, a <a href="/docs/custom-properties/">custom property</a> or a <a href="/docs/lookup-tables/">lookup table</a> can map many values into a few groups.</li>
+  <li><strong>Export to CSV.</strong> The notice's Export button downloads the report's segments as a CSV file. Exporting needs the Analyst role or higher.</li>
+</ul>

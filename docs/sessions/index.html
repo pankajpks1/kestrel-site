@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sessions — Kestrel Help Docs</title>
+  <meta name="description" content="How Kestrel groups each user&#x27;s events into sessions, and how to change the definition.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/" aria-current="page">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Sessions</h1>
+        <p class="lead">How Kestrel groups each user&#x27;s events into sessions, and how to change the definition.</p>
+<p>A <strong>session</strong> is one stretch of a user's activity. Kestrel builds sessions from the events you already send — there is nothing extra to track — and uses them for the <em>Total Sessions</em> measurement, the <em>Session Start</em> and <em>Session End</em> events, and session properties in every report.</p>
+<p>Admins change the definition in <strong>Project Settings › Session Settings</strong>.</p>
+
+<h2>Definition types</h2>
+<table>
+  <tr><th>Type</th><th>A new session starts when…</th></tr>
+  <tr><td>Timeout Based (default)</td><td>The user has been inactive for longer than the timeout. The default is 30 minutes; you can set anything from 1 minute to 24 hours.</td></tr>
+  <tr><td>Event Based</td><td>The user does your <em>Session Start Event</em>; the session ends at your <em>Session End Event</em>.</td></tr>
+  <tr><td>Property Based</td><td>The value of your <em>Session ID Property</em> changes — use this if your app already assigns session IDs.</td></tr>
+</table>
+<p>Whatever the type, every session ends at midnight in the project's time zone, so a session never spans two days.</p>
+
+<h2>Excluded events</h2>
+<p>Some events shouldn't keep a session alive — background syncs, push notifications received. Add up to 500 <strong>Excluded Events</strong>; they are ignored when sessions are built. Kestrel's own bookkeeping events (such as identity merges) and events hidden in Lexicon are always excluded.</p>
+
+<h2 id="session-properties">Session properties</h2>
+<p>Every session carries these properties, which you can filter and break down by:</p>
+<ul>
+  <li><strong>Session Duration (Seconds)</strong> — from the session's first event to its last.</li>
+  <li><strong>Session Event Count</strong> — how many events it holds, not counting excluded or hidden events.</li>
+  <li><strong>Session Start Event Name</strong> and <strong>Session End Event Name</strong>.</li>
+</ul>
+<p><em>Session Start</em> and <em>Session End</em> also carry common properties from the session's events — browser, device, operating system, city and country, app version, current URL, and UTM source, campaign and content — so you can break sessions down by them. Add up to 4 more event properties to carry under <strong>Session Properties</strong>. Session-scoped custom properties are also created here.</p>
+
+<h2>After a change</h2>
+<p>Changing the definition recalculates sessions for all your history. Until that finishes, reports keep using the previous sessions.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

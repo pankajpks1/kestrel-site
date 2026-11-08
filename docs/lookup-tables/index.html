@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lookup tables — Kestrel Help Docs</title>
+  <meta name="description" content="Upload a CSV to add extra details to a property&#x27;s values — product IDs to names, plan codes to prices.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/" aria-current="page">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Lookup tables</h1>
+        <p class="lead">Upload a CSV to add extra details to a property&#x27;s values — product IDs to names, plan codes to prices.</p>
+<p>A <strong>lookup table</strong> is a CSV file you upload to enrich a property. If your events carry a <code>product_id</code>, a table that maps each ID to its name, category and price lets you filter and break down by those columns as if your app had sent them — on all your history, with no code change.</p>
+
+<h2>Preparing the CSV</h2>
+<pre><code>product_id,name,category,price
+p-101,Running Shoes,Footwear,40
+p-102,Tote Bag,Bags,25</code></pre>
+<ul>
+  <li>The <strong>first column is the key</strong>. It is matched against the property's values exactly, including upper / lower case and spaces.</li>
+  <li>The first row is the header and must name every column; names can't be empty or repeated.</li>
+  <li>Every row must have the same number of fields, and keys must be unique. Rows with an empty key are skipped.</li>
+  <li>Use UTF-8. Quoted fields, line breaks inside quotes and Windows line endings are fine.</li>
+  <li>Each column's type (text, number, true / false or date) is taken from the most common kind of value in it.</li>
+  <li>A file can be up to 100 MB. A project's lookup tables can hold up to 5,000,000 rows in total.</li>
+</ul>
+
+<h2>Uploading and mapping</h2>
+<ol>
+  <li>Go to <strong>Lexicon › Lookup Tables</strong> and choose <strong>Import Lookup Table</strong>.</li>
+  <li>Choose the CSV, and optionally pick the property to <strong>Map to</strong>.</li>
+  <li>Save. The table's columns now appear under the mapped property in every property picker.</li>
+</ol>
+<p>You can also map or unmap later: in Lexicon, select event or profile properties and use <strong>Bulk Actions › Map To Lookup Table</strong> or <strong>Unmap From Lookup Table</strong>. A property maps to one table at a time.</p>
+<p>Values with no matching row, and empty cells, appear as <strong>(not set)</strong>.</p>
+
+<h2>Trying a table in one report</h2>
+<p>In a report, open a breakdown's ⋮ menu › <strong>Map Lookup Table</strong>, then pick an existing table or import a CSV. <strong>Apply</strong> maps it for that report only, so you can try a table without changing it for everyone.</p>
+
+<h2>Updating and deleting</h2>
+<p>Open a table to <strong>Export</strong> it, <strong>Replace</strong> it with a new CSV (reports pick up the new version straight away), or <strong>Delete</strong> it.</p>
+
+<h2>Who can do what</h2>
+<ul>
+  <li>Uploading a table needs the Analyst role or higher.</li>
+  <li>Mapping a table to a property in Lexicon needs Admin.</li>
+  <li>An Owner can replace, delete or describe any table; an Admin can do so for the tables they uploaded.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

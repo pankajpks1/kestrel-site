@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Segment limits — Kestrel Help Docs</title>
+  <meta name="description" content="Why a broken-down report shows at most 3,000 segments, which ones you see, and how to reach the rest.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/" aria-current="page">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Segment limits</h1>
+        <p class="lead">Why a broken-down report shows at most 3,000 segments, which ones you see, and how to reach the rest.</p>
+<p>When you break a report down by one or more properties, every distinct combination of values becomes a <strong>segment</strong> — one row in the table and, usually, one line or bar in the chart. A breakdown on a property with many values (user IDs, URLs, search terms) can produce far more segments than anyone can read, so Kestrel shows at most <strong>3,000 segments</strong> per report.</p>
+
+<h2>When you hit the limit</h2>
+<p>If a report reaches 3,000 segments, a notice appears above the table. The numbers you see are still exact — Kestrel never samples or estimates — but segments beyond the first 3,000 are left out of the table and the chart.</p>
+
+<h2>Which segments you see</h2>
+<p>Kestrel keeps the 3,000 largest segments, ranked by the metric's total over the whole date range, largest first. For example, with <em>Total Events</em> broken down by <code>Page URL</code>, you see the 3,000 most-visited URLs in the selected period.</p>
+<ul>
+  <li>For <strong>Frequency per User</strong> metrics, segments are ranked by the measured value.</li>
+  <li>Segments are ranked once for the whole range, so the same segments appear on every day of a line chart.</li>
+</ul>
+
+<h2>Seeing hidden segments</h2>
+<ul>
+  <li><strong>Filter first.</strong> Add a filter that narrows the report — a country, a platform, a date range — and the segments you care about move inside the limit.</li>
+  <li><strong>Break down by fewer properties.</strong> Each extra breakdown multiplies the number of combinations. You can use up to five breakdowns per report.</li>
+  <li><strong>Group values.</strong> For number properties, use <a href="/docs/custom-buckets/">custom buckets</a> to turn thousands of values into a few ranges. For text, a <a href="/docs/custom-properties/">custom property</a> or a <a href="/docs/lookup-tables/">lookup table</a> can map many values into a few groups.</li>
+  <li><strong>Export to CSV.</strong> The notice's Export button downloads the report's segments as a CSV file. Exporting needs the Analyst role or higher.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

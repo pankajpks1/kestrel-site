@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>List properties — Kestrel Help Docs</title>
+  <meta name="description" content="How properties that hold a list — tags, cart items — behave in filters, breakdowns and measurements.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/" aria-current="page">List properties</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>List properties</h1>
+        <p class="lead">How properties that hold a list — tags, cart items — behave in filters, breakdowns and measurements.</p>
+<p>A property can hold a <strong>list</strong> instead of a single value — the tags on an article, the categories a user picked, or the items in a shopping cart. Kestrel understands two kinds:</p>
+<ul>
+  <li><strong>Lists of values</strong>, such as <code>["Shoes", "Bags"]</code>.</li>
+  <li><strong>Lists of objects</strong>, where each item has its own keys, such as a cart: <code>[{"name": "Shoes", "price": 40}, {"name": "Bags", "price": 25}]</code>.</li>
+</ul>
+<p>Send them from your app as a JSON array; no setup is needed.</p>
+
+<h2>Breaking down by a list</h2>
+<p>A breakdown by a list counts each item separately. An event whose list is <code>["Shoes", "Bags"]</code> appears in both the <em>Shoes</em> and the <em>Bags</em> segments, so the segments can add up to more than the total. For a list of objects, pick the key to break down by — for example the cart items' <code>name</code>.</p>
+<ul>
+  <li>An empty list of values (<code>[]</code>) appears as <strong>(empty list)</strong>; an empty list of objects has no keys to show and appears as <strong>(not set)</strong>.</li>
+  <li>An event without the property appears as <strong>(not set)</strong>.</li>
+</ul>
+
+<h2>Filtering on a list</h2>
+<ul>
+  <li><strong>Any in List</strong> keeps events where at least one item matches.</li>
+  <li><strong>All in List</strong> keeps events where every item matches. An empty list never counts as "all".</li>
+</ul>
+<p>With a list of objects you also choose what is counted: <strong>Include All Items</strong> keeps every item of a matching event, while <strong>Include Matching Items</strong> keeps only the items that match. For example, to measure revenue from shoes alone in carts that also hold other things, filter the cart's <code>name</code> to <em>Shoes</em> with Include Matching Items.</p>
+
+<h2>Measuring a list</h2>
+<p>Each list also offers computed values you can filter, break down or aggregate like any number property:</p>
+<ul>
+  <li><strong>Size</strong> — how many items the list holds.</li>
+  <li><strong>Sum</strong> — the total of a number key across the items (for example the cart's total price).</li>
+  <li><strong>Distinct Count</strong> — how many different values a key takes across the items.</li>
+</ul>
+<p>When aggregating an item's number, items where it is text, empty or missing are skipped, not counted as zero.</p>
+
+<h2>In Funnels and Retention</h2>
+<p>A funnel or retention report broken down by a list puts each person in a segment for every distinct item of their event, so one person can appear in several segments.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>
