@@ -14,11 +14,11 @@
 <p>Open the breakdown's ⋮ menu › <strong>Customize Buckets</strong> and choose a tab:</p>
 <table>
   <tr><th>Tab</th><th>What it does</th></tr>
-  <tr><td>Even</td><td>Equal-sized ranges. Set <em>Min</em>, <em>Max</em> and <em>Size</em> — for example 0, 100 and 10 gives <code>&lt;0</code>, <code>0 - &lt;10</code>, <code>10 - &lt;20</code> … <code>≥100</code>.</td></tr>
-  <tr><td>Varied</td><td>Ranges of your choosing. Enter the boundaries in increasing order — for example 0 and 2 gives <code>&lt;0</code>, <code>0 - &lt;2</code>, <code>&gt;=2</code>.</td></tr>
+  <tr><td>Even</td><td>Equal-sized ranges. Set <em>Min</em>, <em>Max</em> and <em>Size</em> — for example 0, 100 and 10 gives <code>&lt;0</code>, <code>0 - &lt;10</code>, <code>10 - &lt;20</code> … <code>≥100</code>. If <em>Max</em> isn't a whole number of sizes above <em>Min</em>, the last range runs on to the next one: 0, 35 and 10 ends with <code>30 - &lt;40</code> and <code>≥40</code>. Up to 1,000 ranges.</td></tr>
+  <tr><td>Varied</td><td>Ranges of your choosing. Enter the boundaries, in any order (they're sorted when you leave a box) and each only once — for example 0 and 2 gives <code>&lt;0</code>, <code>0 - &lt;2</code>, <code>&gt;=2</code>.</td></tr>
   <tr><td>None</td><td>No grouping: one segment per value.</td></tr>
 </table>
-<p>Choose <strong>Apply</strong>. <strong>Reset</strong> returns to the automatic buckets.</p>
+<p>Choose <strong>Apply</strong>. If something is missing or out of range, a note above the editor says what, and Apply waits until it's fixed. <strong>Reset</strong> returns to the automatic buckets.</p>
 
 <h2>Grouping text values</h2>
 <p>For a text property, <strong>Bucket by…</strong> lets you build named groups: each group lists the values it contains (<em>Is</em> …, <em>Else Is</em> …), and <em>Else remaining values</em> collects everything you haven't listed into one group.</p>
