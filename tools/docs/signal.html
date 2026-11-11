@@ -1,0 +1,38 @@
+<!-- title: Signal -->
+<!-- summary: Find which events users did before reaching a goal are most tied to reaching it, and how often they need to be done. -->
+<p><strong>Signal</strong> looks at a goal you care about — coming back in the second week, buying — and scores the events users did on the way by how strongly each is tied to reaching it. It also tells you the action to encourage: "users who did this event at least N times in their first D days". Open it from the <strong>Apps</strong> menu.</p>
+<p>Every number is exact and uses all of your data. Signal needs at least 60 days of history before the end of the time frame.</p>
+
+<h2>Setting up</h2>
+<ol>
+  <li><strong>Users</strong> — <em>All Users</em> who did anything in the time frame, or <em>New Users</em>, whose first event ever falls inside it.</li>
+  <li><strong>Who did</strong> (optional) — only users who did up to 10 events, each at least a number of times. A user's <em>start</em> is then their first such event; otherwise it is their first event in the time frame.</li>
+  <li><strong>Goal</strong> — a retention goal (return and do anything in the 2nd, 3rd or 4th week, or the 2nd month, counted from the start) or a specific event done at least a number of times from the start.</li>
+  <li><strong>Events to score</strong> — pick up to 10 events (each can carry filters, and a property to break it down by), or use <strong>Your Top Events</strong>: the 50 events done most in the time frame, leaving out the goal and events hidden in Lexicon.</li>
+</ol>
+<p>Choose a time frame long enough for users to complete the goal. A user has converted when they meet the goal inside the time frame.</p>
+
+<h2>How an event is scored</h2>
+<p>For each event Kestrel tries 150 combinations: "did it at least <em>f</em> times (1 to 10) within <em>d</em> days (1 to 15) of the start", counting only what happened before the user converted. Each combination sorts users into four groups: did it and converted, did it and didn't, didn't and converted, didn't and didn't.</p>
+<table>
+  <tr><th>Statistic</th><th>Meaning</th></tr>
+  <tr><td>Correlation</td><td>How tightly doing the event goes with converting, from −1 to 1 (the phi coefficient). 0 when a group is empty.</td></tr>
+  <tr><td>Precision</td><td>Of the users who did it, the share who converted.</td></tr>
+  <tr><td>False omission rate</td><td>Of the users who didn't do it, the share who converted.</td></tr>
+  <tr><td>Recall</td><td>Of the users who converted, the share who did it.</td></tr>
+  <tr><td>Fall-out</td><td>Of the users who didn't convert, the share who did it.</td></tr>
+</table>
+<p>The <strong>optimal action</strong> is the combination with the highest correlation. When the most negative correlation is stronger, it is shown instead as a behaviour to avoid. A correlation under 0.1 is weak and 0.3 or more is strong.</p>
+
+<h2>Opportunity score</h2>
+<p>The opportunity score estimates the gain in your overall conversion rate, in percentage points, if the users who don't follow the optimal action converted as often as those who do. It is the difference between precision and false omission rate, multiplied by the share of users who would have to change. It is 0 when the correlation isn't statistically significant (95% level) or isn't strong. A weak correlation across many users who could change can therefore still score high.</p>
+
+<h2>Labels</h2>
+<ul>
+  <li><strong>How often</strong>: <em>Just once</em>, <em>At least N times</em>, <em>Many times</em> (10, the maximum tested), <em>Always avoid</em>, <em>As few times as possible</em>, <em>Is complex</em> (strong positive and negative patterns) or <em>No strong correlations found</em>.</li>
+  <li><strong>How common</strong>: of the user group, the share who did the event at least once in 15 days — <em>Rare</em> under 1%, <em>Uncommon</em> under 10%, <em>Common</em> under 50%, otherwise <em>Majority of user group performed</em>.</li>
+  <li><strong>Cautions</strong>: a correlation of 0.9 or more is flagged as possibly too good to be true; a weak one as unlikely to be useful.</li>
+</ul>
+
+<h2>Detail and download</h2>
+<p>Select an event to see a heat map of all 150 combinations and its supporting statistics. <strong>Download</strong> saves the results as a CSV.</p>

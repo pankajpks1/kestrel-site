@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic automations — Kestrel Help Docs</title>
+  <meta name="description" content="Have Kestrel watch a metric on a schedule and send you a written digest of what changed.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/" aria-current="page">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Agentic automations</h1>
+        <p class="lead">Have Kestrel watch a metric on a schedule and send you a written digest of what changed.</p>
+<p>An <strong>automation</strong> watches one metric for you. On the schedule you choose, it works out how the metric moved, writes a short digest — a summary, key findings and next steps — and delivers it to your email or Slack channels. Today the type available is the <strong>KPI Monitor</strong>.</p>
+
+<h2>Create one</h2>
+<ol>
+  <li>Choose <strong>Create New › Automation</strong>, pick the type and give it a name. It starts as a <strong>Draft</strong>.</li>
+  <li>On the <strong>Configuration</strong> tab set the trigger, the metric, the analysis and the delivery (below).</li>
+  <li>Choose <strong>Save &amp; Activate</strong>. An automation needs a name and a valid metric before it can be activated.</li>
+</ol>
+
+<h2>Trigger: the schedule</h2>
+<p>Schedules run in the <strong>project's time zone</strong>, at a time you set (09:00 by default).</p>
+<table>
+  <tr><th>Repeats</th><th>Options</th></tr>
+  <tr><td>Daily</td><td>Choose which weekdays it runs on.</td></tr>
+  <tr><td>Weekly</td><td>One weekday, every 1 to 12 weeks. Weeks start on your project's first day of the week.</td></tr>
+  <tr><td>Monthly</td><td>A day of the month (the 31st runs on the last day of shorter months) or the first, second, third, fourth or last given weekday, every 1 to 12 months.</td></tr>
+</table>
+<p>"Every N weeks" and "every N months" count from the week or month you activated the automation.</p>
+
+<h2>Metric and analysis</h2>
+<ul>
+  <li><strong>Metric</strong> — an event metric as in Insights, with filters: event count, unique users, sessions, or the sum, average, median, minimum, maximum or distinct count of a property.</li>
+  <li><strong>Breakdown</strong> (optional) — one property. The digest then lists the top 5 and bottom 5 segments.</li>
+  <li><strong>Instructions</strong> (optional, up to 4,000 characters) — tell the digest what to focus on or how to word it. Instructions shape the commentary only; they never change the numbers.</li>
+  <li><strong>Analysis window</strong> — how many complete days each run looks at. It depends on the schedule, and changing the schedule resets it to the first option.</li>
+</ul>
+<table>
+  <tr><th>Schedule</th><th>Window options (days)</th></tr>
+  <tr><td>Daily</td><td>7 (default), 14, 21</td></tr>
+  <tr><td>Weekly</td><td>30 (default), 60, 90</td></tr>
+  <tr><td>Monthly</td><td>90 (default), 180, 365</td></tr>
+</table>
+
+<h2>What a digest contains</h2>
+<p>Each run compares the metric over the window with the equally long window just before it. The numbers are exact — unique users are counted once across the whole window, not added up from daily counts. The digest points out:</p>
+<ul>
+  <li>the window moving 10% or more against the window before;</li>
+  <li>the last day sitting 2 or more standard deviations from the window's daily average;</li>
+  <li>the window's highest or lowest day.</li>
+</ul>
+<p>The commentary may only quote numbers Kestrel computed. If it quotes any other number, that version is discarded and a plain version built from the computed facts is sent instead.</p>
+
+<h2>Delivery</h2>
+<p>Add up to 50 email addresses and up to 20 Slack channels. With none, the digest appears only on the automation's page. Each run also appears there with its result.</p>
+
+<h2>Running and managing</h2>
+<ul>
+  <li><strong>Run Now</strong> starts a run immediately on an active automation. The page shows <em>Running…</em> until it finishes.</li>
+  <li>The overview shows the status (<em>Draft</em>, <em>Active</em> or <em>Paused</em>) and the next run.</li>
+  <li><strong>Delete Content</strong> removes the automation.</li>
+</ul>
+
+<h2>Limits</h2>
+<ul>
+  <li>Up to <strong>20</strong> automations per person in a project.</li>
+  <li>Digests always show the top 5 and bottom 5 segments.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!-- title: Real-time event streams -->
+<!-- summary: Send events to your own web service within seconds of arriving, filtered and shaped the way you want. -->
+<p>A <strong>real-time event stream</strong> delivers events to an HTTPS endpoint of yours as they are received, in batches, with a body you design. Streams are in beta. Setting one up needs the Project Admin role. Open <strong>Data › Destinations › Streams</strong>.</p>
+
+<h2>Set up a stream</h2>
+<ol>
+  <li><strong>Add a destination</strong>: a name, an <code>https://</code> URL and how to authenticate — an API key in a header you name, a bearer token, or none. Kestrel tests it when you save by posting an empty batch. A 401 or 403 marks the destination <em>auth error</em>.</li>
+  <li><strong>Create the stream</strong> on that destination and choose the <strong>event types</strong> to send. At least one is required; there is no "all events". A stream takes up to 500.</li>
+  <li>Optionally add up to 20 <strong>property conditions</strong>. An event must meet all of them. The operators are equals, does not equal, contains, does not contain, is set, is not set, greater than and less than.</li>
+  <li>Write the <strong>payload template</strong>. It is checked and previewed when you save.</li>
+</ol>
+<p>The stream is enabled when saved. Filtering happens as events are received, so events that don't match cost nothing.</p>
+
+<h2>The payload template</h2>
+<p>The template is JSON with values filled in by <code>{{ … }}</code>. It is rendered once per event. These variables are available:</p>
+<table>
+  <tr><th>Variable</th><th>Value</th></tr>
+  <tr><td><code>event_name</code></td><td>The event's name.</td></tr>
+  <tr><td><code>event_time</code></td><td>When it happened, as an ISO 8601 timestamp.</td></tr>
+  <tr><td><code>distinct_id</code></td><td>The user's distinct ID.</td></tr>
+  <tr><td><code>insert_id</code></td><td>The event's unique ID. Use it to ignore duplicates.</td></tr>
+  <tr><td><code>project_id</code></td><td>Your project's ID.</td></tr>
+  <tr><td><code>properties</code></td><td>The event's properties. Reach one with <code>properties.plan</code> or <code>properties['plan']</code>; use <code>[0]</code> to pick an item from a list.</td></tr>
+</table>
+<p>Filters go after a pipe: <code>default</code>, <code>upcase</code>, <code>downcase</code>, <code>capitalize</code>, <code>strip</code>, <code>append</code>, <code>prepend</code>, <code>replace</code>, <code>size</code> and <code>json</code>, for example <code>{{ properties.plan | default: "free" }}</code>. <code>{% comment %}…{% endcomment %}</code> is also allowed. Anything else is rejected. Templates can be up to 20,000 characters, and nothing in them can run code.</p>
+<p>Inside a JSON string a value is escaped for you, so <code>"{{ properties.plan }}"</code> is always valid. Outside a string it is written as a JSON value: numbers stay numbers and a missing value is <code>null</code>.</p>
+
+<h2>Delivery</h2>
+<ul>
+  <li>Events go out as <strong>one POST with a JSON array</strong> of the rendered events (an array even for one event). A batch is sent at 500 events, or 5 seconds after its first event, whichever comes first.</li>
+  <li>Delivery is <strong>at least once</strong>: an event can arrive more than once, so deduplicate on <code>insert_id</code>.</li>
+  <li>A failed batch is tried up to 4 more times, waiting 0.2, 1, 5 and 30 seconds. On a 429, Kestrel waits for the <code>Retry-After</code> you send, up to 10 seconds. Other 4xx answers are retried too.</li>
+  <li>A 401 or 403 stops at once as an authentication error.</li>
+  <li>An event your template can't render is logged and skipped; the rest of the batch is sent.</li>
+</ul>
+
+<h2>When a stream stops</h2>
+<p>A stream whose destination fails authentication, or that runs out of retries, moves to the <strong>error</strong> state and pauses. A paused stream keeps no backlog: events that arrive while it is paused are not sent later. Enabling the stream again clears the error and resumes from then on.</p>
+
+<h2>Monitoring</h2>
+<ul>
+  <li><strong>Metrics</strong> show events delivered, events failed, batches and delivery time per minute.</li>
+  <li>The <strong>failed events log</strong> records, per minute, the status code, the kind of error (authentication, rate limited, server, client, network or template), how many events and the message.</li>
+  <li>The <strong>audit log</strong> lists changes to streams and destinations, with the time and who made them.</li>
+</ul>

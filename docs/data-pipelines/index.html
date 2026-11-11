@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data pipelines — Kestrel Help Docs</title>
+  <meta name="description" content="Export your events, user profiles and identity mappings to your own cloud storage every day, as files you can load anywhere.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/" aria-current="page">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Data pipelines</h1>
+        <p class="lead">Export your events, user profiles and identity mappings to your own cloud storage every day, as files you can load anywhere.</p>
+<p>A <strong>data pipeline</strong> writes your project's data to a bucket you own, on a schedule, so you can load it into your warehouse or process it with your own tools. Kestrel can export to <strong>Amazon S3</strong>, <strong>Google Cloud Storage</strong> and <strong>Microsoft Azure Blob Storage</strong>. Open <strong>Data › Destinations</strong>, find the pipelines in the library and pick your storage.</p>
+
+<h2>Create a pipeline</h2>
+<ol>
+  <li>Fill in the storage's form.
+    <ul>
+      <li><strong>Amazon S3</strong>: the bucket, the region, the encryption (none, AES or KMS, with an optional KMS key ID) and the <strong>role</strong> Kestrel assumes to write to the bucket. The role's trust policy must name Kestrel's export identity and require your project token as the external ID.</li>
+      <li><strong>Google Cloud Storage</strong>: the bucket and its region.</li>
+      <li><strong>Azure Blob Storage</strong>: the client ID, client secret and tenant ID of a service principal, the storage account and the container name.</li>
+    </ul>
+  </li>
+  <li>Choose the <strong>Data Source</strong>: events, user profiles (<em>people</em>) or identity mappings. Create one pipeline per data source.</li>
+  <li>Under <strong>Advanced</strong>, set <strong>Backfill From</strong> (events only; up to 6 months back) and the <strong>Frequency</strong> (daily or hourly).</li>
+  <li>Choose <strong>Create</strong>.</li>
+</ol>
+<p>With <strong>Trial</strong> on (the default) the pipeline exports daily and backfills at most one day. Turn it off to keep exporting beyond the trial; the Data Pipelines add-on is needed for that.</p>
+<p>Secrets are stored sealed and are never shown again.</p>
+
+<h2>When it runs</h2>
+<p>A day is a day in the <strong>project's time zone</strong>. A daily pipeline exports each finished day at 30 minutes past midnight. An hourly pipeline also re-exports the current day at 30 minutes past every hour. People and identity mappings are exported whole each time, not by day. A failed export is tried again an hour later. The pipeline's page shows each day's status and any error.</p>
+
+<h2>File layout</h2>
+<p>Every file is gzipped JSON, one object per line, up to 100,000 rows per file. Within your bucket, under your project ID:</p>
+<table>
+  <tr><th>Data</th><th>Path</th></tr>
+  <tr><td>Events</td><td><code>&lt;project id&gt;/mp_master_event/&lt;yyyy&gt;/&lt;mm&gt;/&lt;dd&gt;/…json.gz</code></td></tr>
+  <tr><td>User profiles</td><td><code>&lt;project id&gt;/mp_people_data/…json.gz</code></td></tr>
+  <tr><td>Identity mappings</td><td><code>&lt;project id&gt;/mp_identity_mappings_data/…json.gz</code></td></tr>
+</table>
+<p>Re-running a day <strong>replaces</strong> it: Kestrel writes the new files first and then deletes the day's older ones, so each event is in its day exactly once.</p>
+
+<h2>Schema</h2>
+<table>
+  <tr><th>Data</th><th>Fields</th></tr>
+  <tr><td>Events</td><td><code>event_name</code>, <code>time</code> (Unix seconds, UTC), <code>distinct_id</code>, <code>device_id</code>, <code>user_id</code>, <code>insert_id</code>, <code>properties</code> (every property of the event)</td></tr>
+  <tr><td>User profiles</td><td><code>distinct_id</code>, <code>properties</code></td></tr>
+  <tr><td>Identity mappings</td><td><code>distinct_id</code>, <code>resolved_distinct_id</code></td></tr>
+</table>
+<p>Use <code>insert_id</code> to remove duplicates if you load the same day twice.</p>
+
+<h2>Limits</h2>
+<ul>
+  <li>A backfill can start at most 6 months ago, and only for events.</li>
+  <li>A trial pipeline exports daily only.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

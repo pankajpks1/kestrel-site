@@ -1,0 +1,46 @@
+<!-- title: Impact -->
+<!-- summary: Measure what a launch did to the behaviour you care about, by comparing the users who adopted it with those who didn't. -->
+<p><strong>Impact</strong> answers "did this launch change anything?". You pick the event that means a user adopted your launch, and the events you hope it moved. Kestrel splits users into <strong>adopters</strong> (did the launch event in your date range) and <strong>non-adopters</strong> (didn't), lines their activity up around the moment of adoption, and shows how far the adopters' behaviour moved beyond what the non-adopters' movement predicts.</p>
+<p>Open it from the <strong>Apps</strong> menu.</p>
+
+<h2>Setting up a report</h2>
+<ol>
+  <li><strong>Launch event</strong> — the event that marks adoption, with filters on its properties if only some of those events count.</li>
+  <li><strong>Impacted events</strong> — up to 20 events you expect the launch to affect. For each, choose what to measure: <em>Total Events</em>, <em>Unique Users</em>, or the <em>Sum</em> or <em>Average</em> of a numeric property.</li>
+  <li><strong>User definition</strong> — count users who did <em>only the impacted event</em>, or users who did <em>any event</em> in the date range.</li>
+  <li><strong>Filters</strong> — narrow every event the report reads by event property, or to a cohort or segment.</li>
+  <li>Pick the date range and the window (the number of days before and after adoption to compare, 1 to 90, 15 by default).</li>
+</ol>
+
+<h2>How days are lined up</h2>
+<p>Everything is measured in <em>relative days</em>, in the project's time zone. An adopter's <strong>day 0</strong> is the day of their first launch event in the date range. A non-adopter has no adoption day, so they use the day the first adopter launched.</p>
+<p>A group's value on a day is its metric events that day divided by the number of users in the group. The <strong>pre-launch rate</strong> is the average of the days before day 0 (−window … −1) and the <strong>post-launch rate</strong> is the average of the days after it (1 … window). Day 0 itself is in neither. Counts are exact, and rates are rounded to two decimals.</p>
+
+<h2>Reading the numbers</h2>
+<table>
+  <tr><th>Number</th><th>What it means</th></tr>
+  <tr><td>Pre-launch relative delta</td><td>How far adopters were from non-adopters before the launch: (adopters − non-adopters) ÷ non-adopters.</td></tr>
+  <tr><td>Unobserved counterfactual of adopters (UCA)</td><td>What the adopters' post-launch rate would probably have been without the launch: the non-adopters' post-launch rate, moved by the pre-launch relative delta.</td></tr>
+  <tr><td>Post-launch relative delta</td><td>How far adopters were from non-adopters after the launch, using the actual adopters' rate.</td></tr>
+  <tr><td>Impact delta</td><td>The adopters' actual post-launch rate minus the UCA. This is the launch's estimated effect.</td></tr>
+  <tr><td>Impact relative delta</td><td>The impact delta divided by the UCA.</td></tr>
+  <tr><td>Confidence</td><td>How unlikely it is that the adopters' change is the same as the non-adopters' change by chance. Kestrel pairs each day after launch with the same distance before it, compares the two groups' average changes with a z-test, and shows one minus the p-value.</td></tr>
+</table>
+<p>A division by zero shows as 0. When the non-adopters' post-launch rate is 0, the UCA is 0 and both relative deltas show <code>0.00%</code>.</p>
+<p>The summary card at the top states the impact in words, and the chart shows the day-by-day lines for both groups with dashed pre- and post-launch averages and the day 0 band.</p>
+
+<h2>Adoption over time</h2>
+<p>This chart shows how many users adopted the launch each day. Adopters are cumulative; the non-adopters line counts users seen so far who haven't adopted yet.</p>
+
+<h2>Causal Impact</h2>
+<p>Adopters often differ from non-adopters before the launch even happens, which can distort the comparison. Causal Impact adjusts for this:</p>
+<ol>
+  <li>For each user, Kestrel counts every other event they did in the days before day 0 and keeps the 10 that best separate adopters from the rest.</li>
+  <li>It fits a regularised logistic regression to estimate each user's likelihood of adopting.</li>
+  <li>Users are split into 10 groups by that likelihood, and adopters are compared with non-adopters inside each group.</li>
+  <li>The group differences are combined into the <strong>average treatment effect</strong> (all users) and the <strong>average treatment effect on the treated</strong> (adopters), each with a 95% confidence interval.</li>
+</ol>
+<p>The same data always gives the same answer. Causal Impact needs enough data: at least 200 users, at least 10 usable events, and at least 3 adopters and 3 non-adopters in every one of the 10 groups. If any of these fails, the report says there isn't enough data instead of showing a result.</p>
+
+<h2>Saving</h2>
+<p>Save a report to reopen it later, or save a copy with <strong>Save As New</strong>. Saved Impact reports appear in the Library with your other reports.</p>

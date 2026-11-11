@@ -1,0 +1,41 @@
+<!-- title: Cohort sync -->
+<!-- summary: Send a cohort's members to another tool, once or on a schedule, and keep that tool up to date as users enter and leave. -->
+<p><strong>Cohort sync</strong> sends the members of a <a href="/docs/cohorts/">cohort</a> to a connected destination — a messaging, advertising or other tool, or your own web service — so you can act on the group there. A sync can run once or keep running, sending only what changed.</p>
+
+<h2>Connect a destination</h2>
+<ol>
+  <li>Go to <strong>Data › Destinations</strong> and open the library.</li>
+  <li>Choose a destination of type <em>Cohorts</em> and fill in its form: a name, the credentials the tool asks for, and the <strong>user ID property</strong> that identifies a user in that tool.</li>
+  <li>Under <strong>Properties To Export</strong>, choose the profile properties to send along with each user.</li>
+</ol>
+<p>Secrets such as passwords and API keys are stored sealed and are never shown again after you save them.</p>
+
+<h2>Start a sync</h2>
+<ol>
+  <li>Open the destination's connection and its <strong>Syncs</strong> tab, then choose to create a sync — or open a cohort's ⋯ menu in <strong>Lexicon › Cohorts</strong> and choose <strong>Export</strong>.</li>
+  <li>Pick one or more cohorts.</li>
+  <li>Choose <strong>One-time export</strong> (send the cohort's users now, once) or <strong>Recurring sync</strong> (keep the destination up to date).</li>
+  <li>Choose <strong>Start Sync</strong>.</li>
+</ol>
+<p>Group cohorts can't be exported.</p>
+
+<h2>What each run sends</h2>
+<p>The first run sends the whole cohort. Later runs send only the difference since the last successful run: users who <strong>entered</strong> the cohort are added and users who <strong>left</strong> are removed. If the last successful run is more than 3 days old, the next run sends the whole cohort again. A failed run keeps the earlier baseline, so the next one catches up.</p>
+<p>A recurring sync runs every 15 or 30 minutes, or every 2 hours, depending on the destination. Syncs on one connection run one after another.</p>
+<p>Each run's overview shows how many users were exported and removed, and you can download the run's users as a CSV with <code>distinct_id</code>, the destination's user ID and the operation (<code>add</code>, <code>remove</code> or <code>no-op</code>).</p>
+
+<h2>Custom Webhook</h2>
+<p>The <strong>Custom Webhook</strong> destination posts to a URL you provide, with optional username and password (HTTP Basic). Each request is a JSON object with an <code>action</code> of <code>members</code> (a whole-cohort run), <code>add_members</code> or <code>remove_members</code>, and a <code>parameters</code> object holding the project ID, the cohort's name, ID and description, a session ID shared by every call of the run, <code>page_info</code> (<code>total_pages</code> and <code>page_count</code>, counting from 1) and the <code>members</code> list. Each member carries <code>email</code>, <code>first_name</code>, <code>last_name</code>, <code>phone_number</code>, its distinct ID, the destination's user ID, and any properties you chose to export.</p>
+<p>Each call holds at most 1,000 users, so a large cohort arrives as several pages. Reply with a 2xx status. You can also reply with a body such as <code>{"status": "failure", "error": {"message": "…", "code": 400}}</code> to report a problem.</p>
+
+<h2>Failures and pauses</h2>
+<ul>
+  <li>A <code>429</code>, a <code>5xx</code> or no answer is retried up to 5 more times over about a minute. If it still fails, the run is marked failed and the next scheduled run tries again.</li>
+  <li>A <code>400</code>, <code>401</code>, <code>403</code> or <code>404</code> <strong>pauses</strong> the sync and its connection, and shows the reason. Fix the cause (for example, new credentials), then reconnect.</li>
+</ul>
+
+<h2>Limits</h2>
+<ul>
+  <li>A project can have up to <strong>60</strong> recurring syncs, across all destinations.</li>
+  <li>A cohort can have up to <strong>10 million</strong> users. A larger one isn't sent; narrow it or split it.</li>
+</ul>

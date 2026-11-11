@@ -1,0 +1,28 @@
+<!-- title: Computed properties -->
+<!-- summary: Properties Kestrel works out from a user's history — when they first appeared, how often they did something — for breakdowns and filters. -->
+<p>A <strong>computed property</strong> isn't stored on your events. Kestrel works it out from each user's history at the moment you run a report. Find them under <strong>Computed</strong> in the property picker of a <strong>Breakdown</strong> or a <strong>Filter</strong> in Insights and Funnels. (To build a new property from a formula over existing ones, see <a href="/docs/custom-properties/">Custom properties</a>.)</p>
+<p>Computed properties always use exact counts and respect the data view you're in. Merged identities count as one user. They aren't available in reports on groups.</p>
+
+<h2 id="first-seen">First Seen</h2>
+<p><strong>First Seen</strong> is the time of a user's first event ever — any event, across all of their history. Break down by it to group users by when they first arrived, or filter to users who first appeared in a given period.</p>
+
+<h2 id="behavioral-properties">Behavioral properties</h2>
+<p>Behavioral properties describe what a user did with a given event. Both are worked out <strong>per interval</strong>: on a line chart, once for each interval (day, week and so on); in a bar, table, metric or funnel, once over the report's whole date range.</p>
+
+<h3>Frequency per User</h3>
+<p>How many times each user did an event. Choose <strong>Frequency per User…</strong>, then pick the event. Breaking down by it gives a segment for each count — "0 times", "1 time", "2 times" and so on. A user who didn't do the event in the interval counts as 0 times.</p>
+
+<h3>Aggregate Property per User</h3>
+<p>A value computed from an event's property for each user. Choose <strong>Aggregate Property per User…</strong>, then:</p>
+<ol>
+  <li>Choose how to aggregate: <em>Sum</em>, <em>Average</em>, <em>Distinct Count</em>, <em>Minimum</em> or <em>Maximum</em>.</li>
+  <li>Pick the event.</li>
+  <li>Pick the property.</li>
+</ol>
+<p>For example, break down by the <em>Sum</em> of <em>amount</em> on <em>Purchase</em> to compare users by how much they spent. A user with no value for the property in the interval has no value (it shows as not set) rather than 0.</p>
+
+<h2>Using them</h2>
+<ul>
+  <li>In a <strong>Breakdown</strong>, they behave like any other property, and you can group their values with <em>Customize Buckets</em>.</li>
+  <li>In a <strong>Filter</strong>, pick the computed property and set a condition, for example <em>Frequency per User of Checkout equals 3</em>.</li>
+</ul>
