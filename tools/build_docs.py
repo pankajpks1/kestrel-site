@@ -20,6 +20,7 @@ NAV = [
     ("Reports", ["measurements", "segment-limits", "custom-buckets", "list-properties", "impact", "signal"]),
     ("Data", ["lexicon", "custom-events", "custom-properties", "computed-properties", "saved-metrics", "lookup-tables", "cohorts", "cohort-sync", "data-pipelines", "real-time-event-streams"]),
     ("Boards", ["board-templates", "value-moment", "public-boards"]),
+    ("Experimentation", ["feature-flags"]),
     ("Automations", ["agentic-automations"]),
     ("Project settings", ["project-settings", "sessions"]),
 ]

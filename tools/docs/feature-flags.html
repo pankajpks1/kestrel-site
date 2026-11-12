@@ -1,0 +1,144 @@
+<!-- title: Feature flags -->
+<!-- summary: Turn a feature on for some users and not others, serve different values to different people, and change who gets what without shipping code. -->
+<p>A <strong>feature flag</strong> is a named switch your app asks Kestrel about. For each person, Kestrel answers with one of the flag's <strong>variants</strong> — on or off, or a value such as a string or a JSON object — and your code acts on it. Who gets which variant is set in Kestrel, so you can roll a change out gradually, limit it to a cohort, or turn it off, all without a release.</p>
+<p>Open <strong>Feature Flags</strong> in the sidebar to see your flags. Creating and changing flags needs the Analyst role or higher.</p>
+
+<h2>Flag types</h2>
+<p>Click <strong>New Feature Flag</strong> and choose a type:</p>
+<table>
+  <tr><th>Type</th><th>Use it to</th><th>Starts with</th></tr>
+  <tr><td><strong>Feature Gate</strong></td><td>Turn a feature on or off.</td><td>Two variants: <em>On</em>, valued <code>true</code>, and <em>Off</em>, valued <code>false</code> (the control).</td></tr>
+  <tr><td><strong>Dynamic Config</strong></td><td>Send your app a setting or payload you can change at any time.</td><td>One variant, <em>Config Key</em>, valued with the empty JSON object <code>{}</code>.</td></tr>
+  <tr><td><strong>Experiment</strong></td><td>Split people between versions of a feature and measure the difference.</td><td>Two variants, <em>control</em> and <em>treatment</em>, half each, valued <code>"control"</code> and <code>"treatment"</code>.</td></tr>
+</table>
+<p>For a Feature Gate or a Dynamic Config, give the flag a <strong>name</strong> and a <strong>key</strong>. The key is what your code asks for. Kestrel suggests one from the name — "Project Launch" becomes <code>project_launch</code> — and you can type your own. An Experiment flag is made for you when you create an experiment: choose <strong>New Experiment</strong> from the dialog.</p>
+<p>A new flag is a <strong>Draft</strong>: it serves nothing until it has a rollout group and is enabled.</p>
+
+<h2>Variants and values</h2>
+<p>The <strong>Variants</strong> card on the flag's Overview lists what the flag can serve.</p>
+<ul>
+  <li><strong>Feature Gate</strong>: On and Off are fixed. People in a rollout group get On; everyone else gets nothing from Kestrel, so your code's fallback applies.</li>
+  <li><strong>Experiment</strong>: each variant has a name, a description and a value. Click <strong>+ Add</strong> for another variant, up to 10. The control's name can't be changed, and the control can't be deleted.</li>
+  <li><strong>Dynamic Config</strong>: each variant has a name and a value. Everyone in a rollout group gets the first variant. Any further variant is served only to the QA testers you assign it to.</li>
+</ul>
+<p>Variant values on Experiment and Dynamic Config flags are either <strong>String</strong> or <strong>JSON</strong>, chosen from the menu on the Value column. All variants of a flag use the same type.</p>
+<ul>
+  <li>A JSON value must be an object, such as <code>{"color": "blue", "limit": 20}</code>. A field shows red until what you've typed is a valid object.</li>
+  <li>Each value can be up to 32 KB.</li>
+  <li>Switching to JSON sets every value to <code>{}</code>. Switching to String sets each value to its variant's name.</li>
+</ul>
+<p>Deleting a variant gives its share of traffic to the first variant left, and removes it from any QA tester who had it.</p>
+
+<h3>Sticky variants</h3>
+<p>Tick <strong>Sticky</strong> on a variant to keep it with each person who is served it. Once someone has a sticky variant, they keep it even if you later change the percentages or splits, or they no longer fall in any rollout group. A control can't be sticky.</p>
+<p>Sticky variants last until the flag is disabled. Disabling a flag forgets them, so when it is enabled again everyone is placed afresh.</p>
+
+<h2 id="qa-testers">QA testers</h2>
+<p>QA testers get a variant of your choosing, so you can check each one before real users see it. Under <strong>QA</strong>, click <strong>+ Add Testers</strong>, search for a user by name or distinct ID, and pick them. A new tester gets the control; use the menu in the <strong>Variant</strong> column to change it. Hover over a row and click the bin to remove a tester.</p>
+<ul>
+  <li>A tester's variant comes before everything else: before a sticky variant and before the rollout groups. They don't need to be in any group.</li>
+  <li>Testers are matched on their distinct ID, and only while the flag is enabled.</li>
+  <li>The answer Kestrel sends for a tester is marked as a QA tester's, and the SDK records that on the exposure event as <code>$is_qa_tester</code>.</li>
+</ul>
+
+<h2 id="rollout-groups">Rollout groups</h2>
+<p>Rollout groups decide who is served. Click <strong>+ Add Rollout Group</strong> to add one; it starts with all users at 100%. Each group has:</p>
+<ul>
+  <li><strong>Filter by User Cohort</strong>: <em>All Users</em>, or one of your saved <a href="/docs/cohorts/">cohorts</a>. Click <strong>+ Filter</strong> to pick a cohort, and the × on it to go back to All Users. The number of users in the cohort is shown alongside.</li>
+  <li><strong>Percentage</strong>: the share of the group who are served, in whole percents.</li>
+  <li>On an Experiment flag, a <strong>split</strong> for each variant: how the people served are divided between the variants. A group's splits must add up to 100%.</li>
+</ul>
+<p>Groups are checked <strong>from top to bottom</strong>. A person is served by the first group they fall into; groups below it are not checked. Someone who falls into no group is served nothing by this flag, and your code's fallback applies. A flag can have up to 50 groups. To remove one, open its menu and choose <strong>Delete</strong>.</p>
+
+<h3>How people are placed</h3>
+<p>Kestrel places people by hashing the flag's <strong>Assignment Key</strong> — the user's distinct ID, or for a flag set to use it, the device ID. Nothing random is stored, so the same person always gets the same answer while the flag stays the same.</p>
+<ul>
+  <li>Whether someone is inside a group's percentage and which variant they get are worked out separately. Raising a percentage only adds people, and everyone already served keeps their variant. Lowering it removes people.</li>
+  <li>Changing an Experiment flag's splits moves some people to another variant, unless their variant is sticky.</li>
+  <li>Cohort membership is checked for the person's distinct ID when your app asks for flags, and remembered for up to 5 minutes.</li>
+</ul>
+<p>The Assignment Key is shown on the flag's <strong>Configuration</strong> tab. It can't be changed once the flag has been enabled.</p>
+
+<h3>Saving changes</h3>
+<p>Changes to variants, QA testers and rollout groups are a draft until you click <strong>Save</strong> at the top of the page; <strong>Cancel</strong> discards them. Once saved, new requests for flags get the change within about 10 seconds. A page or app that has already fetched its flags keeps what it has until it fetches again.</p>
+
+<h2>Enable, disable and archive</h2>
+<p>The <strong>Status</strong> card shows where the flag stands:</p>
+<ul>
+  <li><strong>Draft</strong> — never enabled and no rollout group yet. <strong>Configure Flag</strong> adds a first rollout group.</li>
+  <li><strong>Disabled</strong> — set up but not serving. <strong>Enable Flag</strong> starts serving. A flag needs at least one rollout group to be enabled.</li>
+  <li><strong>Enabled</strong> — serving, with the date it was last enabled. <strong>Disable Flag</strong> stops it: every request then gets your code's fallback, and sticky variants are forgotten.</li>
+</ul>
+<p>You can also switch a flag on or off from the Status column of the Feature Flags list. The list shows each flag's type, its <strong>Daily Usage</strong> over the last 30 days, when it was enabled, its tags, when it last changed and who created it.</p>
+<p>The <strong>⋯</strong> menu on a flag's page has:</p>
+<ul>
+  <li><strong>Rename</strong>.</li>
+  <li><strong>Duplicate</strong> — a new, disabled flag named "Copy of …", with the same variants, rollout groups and QA testers.</li>
+  <li><strong>Archive</strong> — takes the flag off the list. Archiving doesn't stop it serving: disable it first if it should stop.</li>
+  <li><strong>Delete</strong> — only for a flag that isn't enabled. Disable it first.</li>
+  <li><strong>History</strong> — who changed what, and when.</li>
+  <li><strong>Pin for Project</strong>.</li>
+</ul>
+
+<h2>Exposures</h2>
+<p>When your code reads a flag, the SDK records an <code>$experiment_started</code> event with the flag's key as <em>Experiment name</em> and the variant served as <em>Variant name</em>. The <strong>Exposures</strong> card counts the people first exposed to each variant, per day, over the last 30 days, and the list's Daily Usage is built from the same events. If your app records exposures under a different event or property names, set them in your project's settings under <strong>Experimentation</strong> so Kestrel reads them.</p>
+
+<h2 id="implementation">Implementation</h2>
+<p>The <strong>Code Snippets</strong> button on a flag's Status card opens this section.</p>
+
+<h3>Web</h3>
+<p>Turn flags on when you start the Kestrel web SDK (<code>@rivero/kestrel-browser</code>). The SDK fetches the person's variants as soon as it starts, and again whenever <code>identify</code> changes who they are.</p>
+<pre><code>import kestrel from "@rivero/kestrel-browser";
+
+kestrel.init("YOUR_PROJECT_TOKEN", {
+  api_host: "YOUR_KESTREL_INGEST_URL",
+  flags: true,
+});</code></pre>
+<p>Then read a flag by its key. Every call takes a <strong>fallback</strong>, returned when the flag is disabled, the person isn't in any rollout group, the key doesn't exist or flags couldn't be fetched.</p>
+<pre><code>// A Feature Gate: true or false
+if (await kestrel.flags.is_enabled("project_launch", false)) {
+  showNewLauncher();
+}
+
+// An Experiment or Dynamic Config flag: the variant's value
+const color = await kestrel.flags.get_variant_value("button_color", "blue");
+const config = await kestrel.flags.get_variant_value("checkout_config", {});
+
+// The whole variant: its key (the variant's name) and its value
+const variant = await kestrel.flags.get_variant("button_color", { key: "control", value: "blue" });</code></pre>
+<p>These wait for the fetch to finish. Each has a <code>_sync</code> form — <code>is_enabled_sync</code>, <code>get_variant_value_sync</code>, <code>get_variant_sync</code> — that answers at once and returns the fallback if flags haven't arrived yet. <code>await kestrel.flags.when_ready()</code> waits until they have; <code>kestrel.flags.load_flags()</code> fetches them again.</p>
+<p>The first time each flag is read after a fetch, the SDK records the exposure for you.</p>
+<p>To keep variants between page loads, add persistence. Variants are kept in the browser for <code>persistenceTtlMs</code> (24 hours if you leave it out):</p>
+<pre><code>kestrel.init("YOUR_PROJECT_TOKEN", {
+  api_host: "YOUR_KESTREL_INGEST_URL",
+  flags: {
+    persistence: {
+      variantLookupPolicy: "persistenceUntilNetworkSuccess",
+      persistenceTtlMs: 24 * 60 * 60 * 1000,
+    },
+  },
+});</code></pre>
+<p>With <code>persistenceUntilNetworkSuccess</code>, a kept variant is used straight away until a fresh fetch succeeds. With <code>networkFirst</code>, the SDK waits for the fetch and falls back to the kept variants only if it fails.</p>
+
+<h3>Android, iOS and servers</h3>
+<p>The Kestrel Android and iOS SDKs don't fetch flags themselves. From a mobile app, or from your own server, ask Kestrel's flags endpoint on your ingest URL directly:</p>
+<pre><code>GET YOUR_KESTREL_INGEST_URL/flags?context={"distinct_id":"user-123","device_id":"device-456"}
+Authorization: Basic base64("YOUR_PROJECT_TOKEN:")</code></pre>
+<p>The <code>context</code> is JSON, URL-encoded. <code>distinct_id</code> is required; include <code>device_id</code> for flags whose Assignment Key is the device ID. Instead of the header you can pass <code>token=YOUR_PROJECT_TOKEN</code> in the query string. The answer lists every enabled flag that serves this person a variant:</p>
+<pre><code>{
+  "flags": {
+    "project_launch": { "variant_key": "On", "variant_value": true },
+    "button_color": {
+      "variant_key": "treatment",
+      "variant_value": "green",
+      "experiment_id": "…",
+      "is_experiment_active": true
+    }
+  }
+}</code></pre>
+<ul>
+  <li>A flag that serves this person nothing is left out: use your fallback for any key that's missing.</li>
+  <li><code>experiment_id</code> and <code>is_experiment_active</code> appear when the flag belongs to an experiment, and <code>is_qa_tester</code> appears, set to <code>true</code>, for a QA tester.</li>
+  <li>When you use a variant, track the exposure yourself: an <code>$experiment_started</code> event for that person, with <em>Experiment name</em> set to the flag's key and <em>Variant name</em> to <code>variant_key</code>.</li>
+  <li>A missing or malformed <code>context</code> gets a 400 and an unknown token a 401. Requests are rate limited per client address and per project; past a limit the answer is a 429 with a <code>Retry-After</code> header. If flags are unavailable the answer is a 503 — use your fallbacks.</li>
+</ul>
