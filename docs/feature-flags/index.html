@@ -140,8 +140,49 @@ const variant = await kestrel.flags.get_variant("button_color", { key: "control"
 });</code></pre>
 <p>With <code>persistenceUntilNetworkSuccess</code>, a kept variant is used straight away until a fresh fetch succeeds. With <code>networkFirst</code>, the SDK waits for the fetch and falls back to the kept variants only if it fails.</p>
 
-<h3>Android, iOS and servers</h3>
-<p>The Kestrel Android and iOS SDKs don't fetch flags themselves. From a mobile app, or from your own server, ask Kestrel's flags endpoint on your ingest URL directly:</p>
+<h3>Android</h3>
+<p>Turn flags on in the SDK's configuration. The SDK fetches the person's variants the first time your app comes to the foreground, and again whenever <code>identify</code> changes who they are or <code>reset</code> is called.</p>
+<pre><code>val kestrel = Kestrel.init(applicationContext, KestrelConfig(
+    writeKey = "YOUR_PROJECT_TOKEN",
+    dataPlaneUrl = "YOUR_KESTREL_INGEST_URL",
+    flags = KestrelFlagsConfig(enabled = true),
+))</code></pre>
+<p>Then read a flag by its key, with a fallback, from a coroutine:</p>
+<pre><code>// A Feature Gate: true or false
+if (kestrel.flags.isEnabled("project_launch", false)) {
+    showNewLauncher()
+}
+
+// An Experiment or Dynamic Config flag: the variant's value
+val color = kestrel.flags.getVariantValue("button_color", "blue")</code></pre>
+<p>Each read also takes a callback, delivered on the main thread, in place of the coroutine, and has a <code>Sync</code> form — <code>isEnabledSync</code>, <code>getVariantValueSync</code>, <code>getVariantSync</code> — that answers at once and returns the fallback if flags haven't arrived yet. <code>getVariant</code> returns the whole variant: its key, its value and where it came from. <code>kestrel.flags.loadFlags()</code> fetches again; <code>kestrel.flags.setContext(…)</code> replaces the extra context sent with each fetch (for example a <code>company_id</code>, or <code>custom_properties</code> for runtime targeting) and fetches.</p>
+
+<h3>iOS</h3>
+<pre><code>let kestrel = Kestrel.initialize(KestrelConfig(
+    writeKey: "YOUR_PROJECT_TOKEN",
+    dataPlaneUrl: "YOUR_KESTREL_INGEST_URL",
+    flags: KestrelFlagsConfig(enabled: true)
+))
+
+// A Feature Gate: true or false
+if await kestrel.flags.isEnabled("project_launch", fallbackValue: false) {
+    showNewLauncher()
+}
+
+// An Experiment or Dynamic Config flag: the variant's value
+let color = await kestrel.flags.getVariantValue("button_color", fallbackValue: .string("blue"))</code></pre>
+<p>The calls are the same as on Android: each read has a completion-handler form and a <code>Sync</code> form, and <code>loadFlags()</code> and <code>setContext(_:)</code> work the same way.</p>
+
+<h3>On both mobile SDKs</h3>
+<ul>
+  <li>The first time each flag is read after a fetch, the SDK records the exposure for you.</li>
+  <li>Flags are off until you turn them on: an app that doesn't sends no flags request.</li>
+  <li>To keep variants between launches, set <code>variantLookupPolicy</code> to <code>networkFirst</code> or <code>persistenceUntilNetworkSuccess</code> (Android: <code>NETWORK_FIRST</code>, <code>PERSISTENCE_UNTIL_NETWORK_SUCCESS</code>), which work as on the web, and <code>persistenceTtlMs</code> (24 hours if you leave it out). The default keeps nothing.</li>
+  <li>When your app asks people for consent, flags are fetched only once tracking is allowed.</li>
+</ul>
+
+<h3>Servers and other clients</h3>
+<p>From your own server, or any client without a Kestrel SDK, ask Kestrel's flags endpoint on your ingest URL directly:</p>
 <pre><code>GET YOUR_KESTREL_INGEST_URL/flags?context={"distinct_id":"user-123","device_id":"device-456"}
 Authorization: Basic base64("YOUR_PROJECT_TOKEN:")</code></pre>
 <p>The <code>context</code> is JSON, URL-encoded. <code>distinct_id</code> is required; include <code>device_id</code> for flags whose Assignment Key is the device ID. Instead of the header you can pass <code>token=YOUR_PROJECT_TOKEN</code> in the query string. The answer lists every enabled flag that serves this person a variant:</p>
