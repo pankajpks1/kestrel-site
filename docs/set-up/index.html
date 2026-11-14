@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setting up Kestrel — Kestrel Help Docs</title>
+  <meta name="description" content="Send your first events, check they arrive, and open a board built on them.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/" aria-current="page">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Setting up Kestrel</h1>
+        <p class="lead">Send your first events, check they arrive, and open a board built on them.</p>
+<p>The <strong>Set Up Guide</strong> takes a new project from nothing to its first board in four steps. Open it any time from the gear menu: <strong>Set Up Kestrel</strong>. Your project token is at the bottom of the guide's left panel, with a button to copy it — every way of sending data needs it.</p>
+
+<h2>1. Get started</h2>
+<p>Choose how your data will reach Kestrel:</p>
+<ul>
+  <li><strong>Use your Coding Agent</strong> — the guide gives you a prompt to paste into your coding assistant, in your project's folder. It names the SDK to install, your token and your Kestrel address, and asks the assistant to identify signed-in users and track your key actions.</li>
+  <li><strong>Quick Start</strong> — add Kestrel's SDK to your website or app yourself. Most teams start here.</li>
+  <li><strong>I already collect data in a tool</strong> — send events from your servers, or bring your history over, through Kestrel's HTTP APIs (below).</li>
+</ul>
+<p>If someone else on your team should do this part, use <strong>Invite a Teammate</strong>.</p>
+
+<h2>2. Connect your data</h2>
+<h3>With an SDK</h3>
+<p>Pick your platform with <strong>Select a different SDK</strong>:</p>
+<table>
+  <tr><th>Platform</th><th>How it installs</th></tr>
+  <tr><td>Javascript (websites)</td><td>An HTML snippet, or the <code>@rivero/kestrel-browser</code> package from npm or yarn.</td></tr>
+  <tr><td>Android (Kotlin)</td><td>Gradle.</td></tr>
+  <tr><td>iOS (Swift)</td><td>Swift Package Manager.</td></tr>
+</table>
+<p>For websites, two switches shape the code before you copy it:</p>
+<ul>
+  <li><strong>Autocapture</strong> (on by default) records page views, clicks, scrolling and form activity without any tracking code.</li>
+  <li><strong>Session Replay</strong> records visits so you can watch them back — see <a href="/docs/session-replay/">Session Replay</a>.</li>
+</ul>
+<p>Under <strong>Track your key actions</strong> you'll find the two calls worth adding next: <code>identify</code>, once a person signs in, so their events join up across devices; and <code>track</code>, for the moments that matter to you, such as a plan upgrade.</p>
+
+<h3>From your servers or another tool</h3>
+<p>Kestrel accepts events over two HTTP APIs, each authenticated with your project token as the username:</p>
+<ul>
+  <li><strong><code>/import</code></strong> for historical events, each with its own time. Give every event an <code>$insert_id</code>: a batch sent twice is then counted once.</li>
+  <li><strong><code>/v1/batch</code></strong> for a live stream of <code>track</code>, <code>identify</code> and <code>group</code> calls in the widely used Segment format.</li>
+</ul>
+<p>The guide shows a ready-to-run example of each, with your address and token filled in.</p>
+
+<h3>With your coding agent</h3>
+<p>Copy the prompt and paste it into the assistant. Review its changes as you would any pull request before you ship them.</p>
+
+<h2>3. Verify the connection</h2>
+<p>Open your site or app so it sends something. The guide checks every few seconds and ticks off <strong>Events</strong>, <strong>Users</strong> and <strong>Replays</strong> as each arrives; when the first event is in, it shows <em>Connection verified!</em></p>
+<p>Nothing showing up after a minute? Check that the token and address in your code match the ones in the guide, and that a content blocker isn't stopping the script in your browser.</p>
+
+<h2>4. Explore your data</h2>
+<p>The last step offers <a href="/docs/board-templates/">board templates</a>: pick one and Kestrel builds a board of reports on your own events, asking only which of your events to use. You can open the guide again later to add another platform.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Session Replay — Kestrel Help Docs</title>
+  <meta name="description" content="Record visits to your website, watch them back beside their events, and see where people click.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/" aria-current="page">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Session Replay</h1>
+        <p class="lead">Record visits to your website, watch them back beside their events, and see where people click.</p>
+<p><strong>Session Replay</strong> records what a visitor saw and did on your website — page changes, scrolling, clicks, typing — and plays it back like a video, with the visit's events alongside. Use it when a report tells you <em>what</em> happened and you want to see <em>how</em>.</p>
+
+<h2 id="start-recording">Start recording</h2>
+<p>Recording is part of Kestrel's web SDK. Turn it on with two options where you initialise the SDK, next to your token and <code>api_host</code>: the share of sessions to record, and where to load the recorder from — your Kestrel address followed by <code>/lib/</code>.</p>
+<pre><code>record_sessions_percent: 100,
+lib_base_path: "https://ingest.your-company.kestrel.rivero.co.in/lib/",</code></pre>
+<p><code>record_sessions_percent</code> is 0 by default, so nothing is recorded until you set it. 100 records every session; 10 records about one session in ten. The recorder is served by your own Kestrel deployment — the SDK loads no code from anywhere else.</p>
+<p>The quickest way to get the right code is the Set Up Guide: turn on <strong>Session Replay</strong> in its install step and copy the snippet (see <a href="/docs/set-up/">Setting up Kestrel</a>).</p>
+
+<h2>What is recorded, and what is hidden</h2>
+<p>Replays are built for privacy first. By default:</p>
+<ul>
+  <li><strong>All text and every input is masked.</strong> Visitors' words show as placeholders, never as what they typed or read. Password, email, phone and hidden fields are always masked.</li>
+  <li><strong>Images, video and audio are not recorded</strong>; the player shows an empty box of the same size.</li>
+</ul>
+<p>To change what is shown, use the SDK's options when you initialise it:</p>
+<table>
+  <tr><th>Option</th><th>What it does</th></tr>
+  <tr><td><code>record_mask_all_text</code>, <code>record_mask_all_inputs</code></td><td>Set to <code>false</code> to record text or input values by default.</td></tr>
+  <tr><td><code>record_mask_text_selector</code>, <code>record_unmask_text_selector</code></td><td>CSS selectors for text to always hide, or always show.</td></tr>
+  <tr><td><code>record_mask_input_selector</code>, <code>record_unmask_input_selector</code></td><td>The same, for form fields.</td></tr>
+  <tr><td><code>record_block_selector</code></td><td>Elements left out of the recording entirely. Default: <code>img, video, audio</code>.</td></tr>
+</table>
+<p>You can also mark elements in your HTML: the class <code>mp-mask</code> hides an element's text, and <code>mp-block</code> leaves the element out.</p>
+
+<h2>How long a replay runs</h2>
+<ul>
+  <li>After 30 minutes without activity a replay ends, and the recorder starts a new one.</li>
+  <li>No single recording runs longer than 24 hours.</li>
+  <li>Replays are kept for <strong>30 days</strong>, then deleted.</li>
+</ul>
+
+<h2>Watching replays</h2>
+<p>Open <strong>Session Replay</strong> from the left navigation. The list on the left shows recent replays, newest first; filter it by event, by user, or by event and user properties to find the visits you care about. Pick one to play it, with its events listed beside the player — click an event to jump to that moment.</p>
+<p>Replays are also a click away elsewhere: <strong>Watch Replays</strong> on a user's profile plays that person's sessions, and reports offer the replays behind a data point.</p>
+<p>Save a filtered list as a <strong>playlist</strong> to come back to the same set of replays, or add it to a board.</p>
+
+<h2>Heatmaps</h2>
+<p>A <strong>heatmap</strong> shows where visitors clicked on a page, drawn over a replay of that page. To collect the data, turn on <strong>Record Heatmap Data</strong> in the replay settings (below), or set <code>record_heatmap_data: true</code> in the SDK.</p>
+
+<h2>Settings</h2>
+<p>Organisation Owners and Admins set recording rules per project under <strong>Organization Settings › Session Replay</strong>:</p>
+<ul>
+  <li><strong>Sampling</strong> — the share of sessions each project records, and <strong>conditional</strong> rules that record more when a given event, property value or URL appears. Rules only ever add recordings.</li>
+  <li><strong>Advanced</strong> — per platform: the shortest and longest recording kept, the inactivity timeout, and whether to record heatmap data.</li>
+</ul>
+<p>The SDK follows these settings when it is initialised with <code>remote_settings_mode</code>; otherwise the options in your code apply.</p>
+
+<h2>Not seeing replays?</h2>
+<ul>
+  <li>Check that <code>record_sessions_percent</code> is above 0 and that <code>lib_base_path</code> points at your Kestrel address, ending in <code>/lib/</code>.</li>
+  <li>A replay appears once the visitor's first batch of recording arrives — usually within seconds. Leave the page open a little while when testing.</li>
+  <li>Content blockers in some browsers stop analytics scripts, and with them the recorder.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

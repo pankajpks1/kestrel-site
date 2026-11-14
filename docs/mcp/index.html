@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP — Kestrel Help Docs</title>
+  <meta name="description" content="Ask an AI assistant about your Kestrel data, and give Kestrel&#x27;s Agent access to your other tools.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/mcp/" aria-current="page">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>MCP</h1>
+        <p class="lead">Ask an AI assistant about your Kestrel data, and give Kestrel&#x27;s Agent access to your other tools.</p>
+<p><strong>MCP</strong> (Model Context Protocol) is the common way AI assistants connect to other products. Kestrel speaks it in both directions:</p>
+<ul>
+  <li><a href="#kestrel-in-your-assistant">Kestrel in your assistant</a> — ask Claude, ChatGPT, Cursor or any assistant that supports MCP about your product data, and get Kestrel's exact numbers and charts back in the conversation.</li>
+  <li><a href="#mcp-connections">MCP Connections</a> — let Kestrel's own Agent read from other tools you use.</li>
+</ul>
+
+<h2 id="kestrel-in-your-assistant">Kestrel in your assistant</h2>
+<p>Kestrel's MCP server lives on your query address, at the path <code>/mcp</code>: for example <code>https://api.your-company.kestrel.rivero.co.in/mcp</code>.</p>
+
+<h3>Connecting</h3>
+<ol>
+  <li>In your assistant, add a custom connector (in Claude: <strong>Settings › Connectors › Add custom connector</strong>). Name it <em>Kestrel</em> and give it the address above.</li>
+  <li>Choose <strong>Connect</strong>. A Kestrel page opens: sign in if asked, read the card describing what the assistant may do, and choose <strong>Authorize</strong>.</li>
+  <li>Back in the assistant, ask something like <em>"How did sign-ups do last week compared with the week before?"</em></li>
+</ol>
+<p>The connection acts as you, with your role in the project: it sees what you can see in Kestrel and nothing more. Signing out of Kestrel, or being removed from the organisation, ends it straight away.</p>
+<p><strong>For scripts and assistants without sign-in support</strong>, use a service account instead: <strong>Organization Settings › Service Accounts › Add Service Account</strong> gives a username and secret (shown once), sent as HTTP Basic credentials. Every call is held to the account's role and shows in the Audit Log with the origin <em>MCP</em>.</p>
+<p>If your Kestrel address only accepts some networks, the assistant's servers must be allowed to reach <code>/mcp</code>; ask whoever runs your Kestrel deployment.</p>
+
+<h3>What it can answer</h3>
+<table>
+  <tr><th>Ask about</th><th>What Kestrel returns</th></tr>
+  <tr><td>An overview</td><td>How fresh the data is, the last 7 days against the 7 before, the top events and their change, your boards.</td></tr>
+  <tr><td>What's tracked</td><td>Events with their 30-day counts, properties to filter and break down by, and their values.</td></tr>
+  <tr><td>Trends</td><td>Up to 10 metrics over time — events, unique users, sessions, sums and averages of a property — with breakdowns, filters, cohorts and a comparison with the previous period.</td></tr>
+  <tr><td>Funnels, retention and paths</td><td>Step conversion and drop-off with time to convert; retention by cohort with its curve; the most common journeys before or after an event.</td></tr>
+  <tr><td>Why a number moved</td><td>The segments that explain a change on a given day.</td></tr>
+  <tr><td>Boards, cohorts and people</td><td>Any board's charts for any date range; your cohorts; one user's profile.</td></tr>
+  <tr><td>Anything else</td><td>Read-only SQL over your events, with the same limits as the SQL explorer.</td></tr>
+</table>
+<p>Every answer comes from the same code that draws Kestrel's reports, so it matches what you would see in the app, to the last digit. Assistants that can display them show charts in the conversation, each with <strong>Open in Kestrel</strong> to continue in the full report. Date ranges are read in your project's time zone.</p>
+<p>The one thing an assistant can change is to <strong>create a board</strong> from its findings, which is private to you unless you ask otherwise. It cannot edit or delete anything.</p>
+
+<h2 id="mcp-connections">MCP Connections</h2>
+<p>Kestrel's Agent can read from other tools — your issue tracker, your docs — through their MCP servers, to bring that context into its answers.</p>
+<ol>
+  <li>An Organisation Owner or Admin turns on <strong>Enable MCP Connectors</strong> under <strong>Organization Settings › AI Settings</strong>. It is off by default; while it is off nobody can add a connection and the Agent uses none.</li>
+  <li>Each person then adds their own under <strong>Settings › Profile › MCP Connections › Add Connection</strong>: a name and the server's address. Kestrel checks the server, and asks for an authentication token if the server needs one.</li>
+</ol>
+<p>Connections are <strong>read-only</strong> and <strong>private to you</strong>: teammates cannot see or use them, and the Agent uses only the connections of the person asking. Remove one with its trash icon at any time, even while connectors are turned off. Servers that sign in only through a browser (OAuth) can't be added yet; if such a server also takes a personal access token, paste that instead.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

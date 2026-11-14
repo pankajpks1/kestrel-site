@@ -1,0 +1,46 @@
+<!-- title: Setting up Kestrel -->
+<!-- summary: Send your first events, check they arrive, and open a board built on them. -->
+<p>The <strong>Set Up Guide</strong> takes a new project from nothing to its first board in four steps. Open it any time from the gear menu: <strong>Set Up Kestrel</strong>. Your project token is at the bottom of the guide's left panel, with a button to copy it — every way of sending data needs it.</p>
+
+<h2>1. Get started</h2>
+<p>Choose how your data will reach Kestrel:</p>
+<ul>
+  <li><strong>Use your Coding Agent</strong> — the guide gives you a prompt to paste into your coding assistant, in your project's folder. It names the SDK to install, your token and your Kestrel address, and asks the assistant to identify signed-in users and track your key actions.</li>
+  <li><strong>Quick Start</strong> — add Kestrel's SDK to your website or app yourself. Most teams start here.</li>
+  <li><strong>I already collect data in a tool</strong> — send events from your servers, or bring your history over, through Kestrel's HTTP APIs (below).</li>
+</ul>
+<p>If someone else on your team should do this part, use <strong>Invite a Teammate</strong>.</p>
+
+<h2>2. Connect your data</h2>
+<h3>With an SDK</h3>
+<p>Pick your platform with <strong>Select a different SDK</strong>:</p>
+<table>
+  <tr><th>Platform</th><th>How it installs</th></tr>
+  <tr><td>Javascript (websites)</td><td>An HTML snippet, or the <code>@rivero/kestrel-browser</code> package from npm or yarn.</td></tr>
+  <tr><td>Android (Kotlin)</td><td>Gradle.</td></tr>
+  <tr><td>iOS (Swift)</td><td>Swift Package Manager.</td></tr>
+</table>
+<p>For websites, two switches shape the code before you copy it:</p>
+<ul>
+  <li><strong>Autocapture</strong> (on by default) records page views, clicks, scrolling and form activity without any tracking code.</li>
+  <li><strong>Session Replay</strong> records visits so you can watch them back — see <a href="/docs/session-replay/">Session Replay</a>.</li>
+</ul>
+<p>Under <strong>Track your key actions</strong> you'll find the two calls worth adding next: <code>identify</code>, once a person signs in, so their events join up across devices; and <code>track</code>, for the moments that matter to you, such as a plan upgrade.</p>
+
+<h3>From your servers or another tool</h3>
+<p>Kestrel accepts events over two HTTP APIs, each authenticated with your project token as the username:</p>
+<ul>
+  <li><strong><code>/import</code></strong> for historical events, each with its own time. Give every event an <code>$insert_id</code>: a batch sent twice is then counted once.</li>
+  <li><strong><code>/v1/batch</code></strong> for a live stream of <code>track</code>, <code>identify</code> and <code>group</code> calls in the widely used Segment format.</li>
+</ul>
+<p>The guide shows a ready-to-run example of each, with your address and token filled in.</p>
+
+<h3>With your coding agent</h3>
+<p>Copy the prompt and paste it into the assistant. Review its changes as you would any pull request before you ship them.</p>
+
+<h2>3. Verify the connection</h2>
+<p>Open your site or app so it sends something. The guide checks every few seconds and ticks off <strong>Events</strong>, <strong>Users</strong> and <strong>Replays</strong> as each arrives; when the first event is in, it shows <em>Connection verified!</em></p>
+<p>Nothing showing up after a minute? Check that the token and address in your code match the ones in the guide, and that a content blocker isn't stopping the script in your browser.</p>
+
+<h2>4. Explore your data</h2>
+<p>The last step offers <a href="/docs/board-templates/">board templates</a>: pick one and Kestrel builds a board of reports on your own events, asking only which of your events to use. You can open the guide again later to add another platform.</p>

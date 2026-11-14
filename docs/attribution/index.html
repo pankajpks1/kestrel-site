@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attribution — Kestrel Help Docs</title>
+  <meta name="description" content="Credit each conversion to the touchpoints that led up to it, with the model of your choice.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/" aria-current="page">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Attribution</h1>
+        <p class="lead">Credit each conversion to the touchpoints that led up to it, with the model of your choice.</p>
+<p>An ordinary breakdown splits a conversion by the value it carried when it happened. An <strong>attributed breakdown</strong> looks back instead: it finds the values the person was exposed to <em>before</em> converting — the campaign that brought them, the pages they landed on — and shares the conversion's credit among them. Use it to answer "which channels drive our purchases?" when the purchase event itself doesn't say.</p>
+
+<h2>Adding one</h2>
+<ol>
+  <li>In an Insights report, open <strong>Breakdown</strong> and go to <strong>Computed</strong>.</li>
+  <li>Choose <strong>Attributed by…</strong>, then the property to credit — <code>utm_source</code>, for example.</li>
+  <li>Pick the model on each metric, and the lookback window on the breakdown (both below).</li>
+</ol>
+<p>A report can have one attributed breakdown, alongside ordinary ones.</p>
+
+<h2>Touchpoints</h2>
+<p>A <strong>touchpoint</strong> is any of the person's events that has a value for the property, at or before the conversion. The conversion's own value counts too. A conversion with no touchpoint in its window lands in <em>(not set)</em>.</p>
+<p>The <strong>lookback window</strong> limits how far back touchpoints are read:</p>
+<ul>
+  <li><strong>Days</strong> — from 1 to 366 days before the conversion; 30 by default. A touch exactly that many days earlier still counts.</li>
+  <li><strong>1 Session</strong> — only touchpoints in the same session as the conversion (see <a href="/docs/sessions/">Sessions</a>). Good for landing and exit pages.</li>
+</ul>
+<p><strong>Filter Touchpoints</strong> lets you leave out values that shouldn't earn credit — a <em>direct</em> or <em>internal</em> source, say. Excluded values are dropped before the model runs, whatever their capitalisation, and the report's title notes what was excluded.</p>
+
+<h2>Models</h2>
+<p>Each conversion has one unit of credit; the model decides how it is shared among the touchpoints, in time order.</p>
+<table>
+  <tr><th>Model</th><th>Credit goes to</th></tr>
+  <tr><td>Last Touch (default)</td><td>The most recent touchpoint, all of it.</td></tr>
+  <tr><td>First Touch</td><td>The earliest touchpoint in the window, all of it.</td></tr>
+  <tr><td>Participation</td><td>Every distinct value seen, a full unit each. Totals are therefore larger than the number of conversions: a purchase after three campaigns counts once for each.</td></tr>
+  <tr><td>Linear</td><td>Every touchpoint equally.</td></tr>
+  <tr><td>Time Decay</td><td>Recent touchpoints more than old ones. A touchpoint's weight halves for every 7 days between it and the conversion, and the weights are then scaled to add up to one.</td></tr>
+  <tr><td>U-Shaped</td><td>40% to the first touchpoint, 40% to the last, and 20% shared by the ones between.</td></tr>
+  <tr><td>J-Shaped</td><td>20% to the first, 60% to the last, 20% shared between.</td></tr>
+  <tr><td>Inverse J-Shaped</td><td>60% to the first, 20% to the last, 20% shared between.</td></tr>
+  <tr><td>Custom</td><td>Your own first, middle and last percentages, saved under a name you give it.</td></tr>
+</table>
+<p>For the position-based models (U, J, Inverse J and Custom): a single touchpoint takes all the credit, and with exactly two the first and last shares are rescaled to add up to 100% — U-Shaped gives 50% and 50%.</p>
+
+<h2>What the numbers mean</h2>
+<ul>
+  <li><strong>Total Events</strong> adds up the credit each value earned. With a fractional model (Linear, Time Decay, the shaped ones) a value can have a fractional count.</li>
+  <li><strong>Sum</strong> of a property gives each value its share of every conversion's amount — half the credit, half the revenue.</li>
+  <li><strong>Unique Users</strong> credits each person once per time bucket, from either their first or their last conversion in it. Choose which on the metric: <strong>First Segment</strong> or <strong>Last Segment</strong>.</li>
+</ul>
+<p>First Touch, Last Touch and Participation give whole units of credit, so they work with every measurement. The fractional models work with Total Events, Unique Users and Sum.</p>
+<p>Attribution is computed from every event in the range, person by person — never from a sample — so the same report always gives the same numbers.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retention primer — Kestrel Help Docs</title>
+  <meta name="description" content="Whether people keep coming back, how Kestrel measures it, and the retention reports on the template boards.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/" aria-current="page">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Retention primer</h1>
+        <p class="lead">Whether people keep coming back, how Kestrel measures it, and the retention reports on the template boards.</p>
+<p><strong>Retention</strong> is the share of people who come back after their first experience — and keep coming back. It is the clearest sign that a product is useful: people may try something once out of curiosity, but they only return when it does something for them. Without it, every new user you win replaces one you lost, and growth stalls however much you spend on getting people in.</p>
+
+<h2>How a Retention report counts</h2>
+<p>A Retention report starts from a <strong>cohort</strong>: the people who did a starting event in a given period — signed up on Monday, say. It then counts how many of them did a returning event in each period after: day 1, day 2, and so on. The share who returned is the retention rate for that period.</p>
+<ul>
+  <li><strong>On</strong> counts a person in a period only if they returned in that exact period.</li>
+  <li><strong>On or After</strong> counts them in a period if they returned in it or any later one. Its curve never rises, and it answers "how many are still with us?" rather than "how many came back that day?".</li>
+</ul>
+<p>The average across cohorts weights each one by its size and, wherever it can, leaves out cohorts that are still inside a period — so a cohort that started yesterday doesn't drag day 7 down.</p>
+
+<h2>Choosing the events</h2>
+<p>For the starting and returning event, use your <a href="/docs/value-moment/">value moment</a> rather than any activity: retaining people who merely open the app is easy, retaining people who get value is what counts. Starting from sign-up and returning on the value moment tells you how well you turn new users into regular ones.</p>
+<p>Pick the period to match how often your product should be used. Daily retention suits a messaging app; a budgeting app is better read weekly or monthly.</p>
+
+<h2>The template boards' retention reports</h2>
+<h3>How many engaged users come back? (Company KPIs)</h3>
+<p>Retention from the value moment to the value moment, counted <em>On or After</em>. Look at the shape of the curve as much as its height: a curve that drops and then flattens means you have found people who stay; one that keeps falling towards zero means even your engaged users drift away in time.</p>
+
+<h3>Who are the dormant users? (Company KPIs)</h3>
+<p>The <strong>Driftaway Users</strong> cohort holds people who reached the value moment in the last 30 days and then stopped. They know what your product does and chose not to come back, which makes them worth a closer look — and often a well-timed message.</p>
+
+<h3>Is a new feature kept? (Feature Launch)</h3>
+<p>Weekly retention of the feature's own event, its week 1 figure, and how week 1 retention trends since launch. A last report compares the retention of people who tried the feature with everyone else, to see whether the feature improves the product as a whole.</p>
+
+<h2>Reading retention well</h2>
+<ul>
+  <li><strong>Compare cohorts, not only the average.</strong> If recent cohorts retain better than older ones, your product changes are working.</li>
+  <li><strong>Break it down.</strong> Retention by acquisition channel or plan shows which users you should be finding more of.</li>
+  <li><strong>Give it time.</strong> A period's rate only settles once it has fully passed; read the latest cohorts with that in mind.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

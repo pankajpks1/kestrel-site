@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Growth primer — Kestrel Help Docs</title>
+  <meta name="description" content="How many people get value from your product over time, and the growth reports on the Company KPIs board.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/" aria-current="page">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Growth primer</h1>
+        <p class="lead">How many people get value from your product over time, and the growth reports on the Company KPIs board.</p>
+<p><strong>Growth</strong> is the number of people getting value from your product, over time. It has two halves: bringing new people in, and keeping the ones you have. A product grows when the people it gains each period outnumber the people it loses — which is why growth is read alongside <a href="/docs/engagement-primer/">engagement</a> and <a href="/docs/retention-primer/">retention</a>, not on its own.</p>
+
+<h2>Active users</h2>
+<p>The most common growth numbers count <strong>active users</strong>: distinct people who did something in a window of time.</p>
+<table>
+  <tr><th>Metric</th><th>Who it counts</th></tr>
+  <tr><td>DAU — daily active users</td><td>Distinct people active on each day.</td></tr>
+  <tr><td>WAU — weekly active users</td><td>Distinct people active in the 7 days ending on each day.</td></tr>
+  <tr><td>MAU — monthly active users</td><td>Distinct people active in the 30 days ending on each day.</td></tr>
+</table>
+<p>What makes these useful is what you call "active". Count everyone who opened the app and the number flatters you; count people who reached your <a href="/docs/value-moment/">value moment</a> and it tells you how many people your product actually served. In Insights, choose the event, measure it by <em>Unique Users</em>, and pick the aggregation in its settings (see <a href="/docs/measurements/">Measurements in Insights</a>).</p>
+<p>DAU divided by MAU is a quick read of habit: the closer to 1, the more of your monthly users come back day after day. What a good ratio is depends on how often your product is meant to be used.</p>
+
+<h2>The board's growth reports</h2>
+<h3>What are the DAU and WAU?</h3>
+<p>A line chart of daily and weekly active users, both counted on the value moment. Watch the gap between them: a widening gap means more people use the product some days a week rather than every day.</p>
+
+<h3>How many new users are signing up?</h3>
+<p>Weekly first-time sign-ups over the last three months, compared with the same weeks a year earlier, so seasonal swings don't read as growth or decline.</p>
+
+<h3>Which channels bring the most sign-ups?</h3>
+<p>Sign-ups each week broken down by each user's latest campaign source (<code>utm_source [last touch]</code>). Judge a channel by the users who stay as well as by how many sign up — break a <a href="/docs/retention-primer/">retention</a> report down the same way — since a channel that brings many people who soon leave helps less than it seems.</p>
+
+<h2>Reading growth well</h2>
+<ul>
+  <li><strong>Separate new from returning.</strong> A flat active-user line can hide strong sign-ups masking poor retention, or the reverse.</li>
+  <li><strong>Mind the window.</strong> A 30-day count reacts slowly: a change you made last week will take weeks to show fully in MAU.</li>
+  <li><strong>Count only what you trust.</strong> Bots, test accounts and internal users inflate every growth number; filter them out, or define the value moment so they can't reach it.</li>
+</ul>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>
