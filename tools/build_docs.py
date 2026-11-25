@@ -17,7 +17,7 @@ OUT = ROOT / "docs"
 
 # The sidebar, in reading order: (group, [page, …]).
 NAV = [
-    ("Getting started", ["set-up", "mcp"]),
+    ("Getting started", ["set-up", "warehouse-import", "mcp"]),
     ("Reports", ["measurements", "segment-limits", "custom-buckets", "list-properties", "attribution", "impact", "signal", "session-replay"]),
     ("Data", ["lexicon", "custom-events", "custom-properties", "computed-properties", "saved-metrics", "lookup-tables", "cohorts", "cohort-sync", "data-pipelines", "real-time-event-streams"]),
     ("Boards", ["board-templates", "value-moment", "engagement-primer", "retention-primer", "growth-primer", "public-boards"]),

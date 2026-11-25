@@ -1,0 +1,25 @@
+<!-- title: Importing from a data warehouse -->
+<!-- summary: Bring events kept in BigQuery, Snowflake or Redshift into Kestrel through the /import API. -->
+<p>If your events already live in a data warehouse — BigQuery, Snowflake or Redshift — you can load them into Kestrel with its <code>/import</code> API. Kestrel does not read your warehouse on a schedule today; an import is a script you run, once for your history and then as often as you like for new rows.</p>
+
+<h2>1. Shape each row as an event</h2>
+<p>Write a query that returns one row per event, with these columns:</p>
+<table>
+  <tr><th>Field</th><th>What goes in it</th></tr>
+  <tr><td><code>event</code></td><td>The event's name, such as <code>Signed Up</code>.</td></tr>
+  <tr><td><code>properties.time</code></td><td>When it happened, in Unix seconds or milliseconds (UTC).</td></tr>
+  <tr><td><code>properties.distinct_id</code></td><td>The person: their user id once known, otherwise a device id.</td></tr>
+  <tr><td><code>properties.$insert_id</code></td><td>A unique id per event, such as your table's primary key. An event sent twice with the same id is counted once, so a failed import can simply be run again.</td></tr>
+  <tr><td>any other <code>properties.*</code></td><td>The event's properties, as you want them to appear in reports.</td></tr>
+</table>
+
+<h2>2. Send it in batches</h2>
+<p>Each request to <code>/import</code> carries up to 2,000 events and 10 MB, as a JSON array or one event per line (gzip welcome), with your project token as the username of a Basic <code>Authorization</code> header:</p>
+<pre><code>curl https://YOUR-KESTREL-ADDRESS/import \
+  -u "YOUR_PROJECT_TOKEN:" \
+  -H "Content-Type: application/x-ndjson" \
+  --data-binary @events.ndjson</code></pre>
+<p>Run the query in your warehouse, write the result as newline-delimited JSON (BigQuery's <code>EXPORT DATA</code>, Snowflake's <code>COPY INTO</code> an external stage, Redshift's <code>UNLOAD</code>), split it into files of 2,000 events, and send each file. Events older than two years are refused, as Kestrel keeps two years of history.</p>
+
+<h2>3. Check it arrived</h2>
+<p>Each reply says how many events were accepted and lists any that were not, with the reason. Then open an Insights report on one of the imported events over the imported dates and compare its total with a <code>COUNT(*)</code> in your warehouse.</p>

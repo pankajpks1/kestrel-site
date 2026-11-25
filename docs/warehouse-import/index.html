@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Importing from a data warehouse — Kestrel Help Docs</title>
+  <meta name="description" content="Bring events kept in BigQuery, Snowflake or Redshift into Kestrel through the /import API.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap wide">
+      <a class="brand" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg> Kestrel</a>
+      <nav><a href="/docs/">Help Docs</a><a href="mailto:pankaj@rivero.co.in">Contact</a></nav>
+    </div>
+  </header>
+  <main>
+    <div class="wrap wide docs">
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/">Setting up Kestrel</a></li><li><a href="/docs/warehouse-import/" aria-current="page">Importing from a data warehouse</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <article>
+        <h1>Importing from a data warehouse</h1>
+        <p class="lead">Bring events kept in BigQuery, Snowflake or Redshift into Kestrel through the /import API.</p>
+<p>If your events already live in a data warehouse — BigQuery, Snowflake or Redshift — you can load them into Kestrel with its <code>/import</code> API. Kestrel does not read your warehouse on a schedule today; an import is a script you run, once for your history and then as often as you like for new rows.</p>
+
+<h2>1. Shape each row as an event</h2>
+<p>Write a query that returns one row per event, with these columns:</p>
+<table>
+  <tr><th>Field</th><th>What goes in it</th></tr>
+  <tr><td><code>event</code></td><td>The event's name, such as <code>Signed Up</code>.</td></tr>
+  <tr><td><code>properties.time</code></td><td>When it happened, in Unix seconds or milliseconds (UTC).</td></tr>
+  <tr><td><code>properties.distinct_id</code></td><td>The person: their user id once known, otherwise a device id.</td></tr>
+  <tr><td><code>properties.$insert_id</code></td><td>A unique id per event, such as your table's primary key. An event sent twice with the same id is counted once, so a failed import can simply be run again.</td></tr>
+  <tr><td>any other <code>properties.*</code></td><td>The event's properties, as you want them to appear in reports.</td></tr>
+</table>
+
+<h2>2. Send it in batches</h2>
+<p>Each request to <code>/import</code> carries up to 2,000 events and 10 MB, as a JSON array or one event per line (gzip welcome), with your project token as the username of a Basic <code>Authorization</code> header:</p>
+<pre><code>curl https://YOUR-KESTREL-ADDRESS/import \
+  -u "YOUR_PROJECT_TOKEN:" \
+  -H "Content-Type: application/x-ndjson" \
+  --data-binary @events.ndjson</code></pre>
+<p>Run the query in your warehouse, write the result as newline-delimited JSON (BigQuery's <code>EXPORT DATA</code>, Snowflake's <code>COPY INTO</code> an external stage, Redshift's <code>UNLOAD</code>), split it into files of 2,000 events, and send each file. Events older than two years are refused, as Kestrel keeps two years of history.</p>
+
+<h2>3. Check it arrived</h2>
+<p>Each reply says how many events were accepted and lists any that were not, with the reason. Then open an Insights report on one of the imported events over the imported dates and compare its total with a <code>COUNT(*)</code> in your warehouse.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap wide">
+      <a href="https://rivero.co.in/privacy/">Privacy Policy</a><a href="https://rivero.co.in/terms/">Terms of Service</a>
+      <p>Kestrel is a product of <a href="https://rivero.co.in/">Rivero</a>. © 2026 Rivero</p>
+    </div>
+  </footer>
+</body>
+</html>

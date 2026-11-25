@@ -16,7 +16,7 @@
   </header>
   <main>
     <div class="wrap wide docs">
-      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/" aria-current="page">Setting up Kestrel</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
+      <aside><h4>Getting started</h4><ul><li><a href="/docs/set-up/" aria-current="page">Setting up Kestrel</a></li><li><a href="/docs/warehouse-import/">Importing from a data warehouse</a></li><li><a href="/docs/mcp/">MCP</a></li></ul><h4>Reports</h4><ul><li><a href="/docs/measurements/">Measurements in Insights</a></li><li><a href="/docs/segment-limits/">Segment limits</a></li><li><a href="/docs/custom-buckets/">Custom buckets</a></li><li><a href="/docs/list-properties/">List properties</a></li><li><a href="/docs/attribution/">Attribution</a></li><li><a href="/docs/impact/">Impact</a></li><li><a href="/docs/signal/">Signal</a></li><li><a href="/docs/session-replay/">Session Replay</a></li></ul><h4>Data</h4><ul><li><a href="/docs/lexicon/">Lexicon</a></li><li><a href="/docs/custom-events/">Custom events</a></li><li><a href="/docs/custom-properties/">Custom properties</a></li><li><a href="/docs/computed-properties/">Computed properties</a></li><li><a href="/docs/saved-metrics/">Metrics and behaviors</a></li><li><a href="/docs/lookup-tables/">Lookup tables</a></li><li><a href="/docs/cohorts/">Cohorts</a></li><li><a href="/docs/cohort-sync/">Cohort sync</a></li><li><a href="/docs/data-pipelines/">Data pipelines</a></li><li><a href="/docs/real-time-event-streams/">Real-time event streams</a></li></ul><h4>Boards</h4><ul><li><a href="/docs/board-templates/">Board templates</a></li><li><a href="/docs/value-moment/">Your value moment</a></li><li><a href="/docs/engagement-primer/">Engagement primer</a></li><li><a href="/docs/retention-primer/">Retention primer</a></li><li><a href="/docs/growth-primer/">Growth primer</a></li><li><a href="/docs/public-boards/">Public boards</a></li></ul><h4>Experimentation</h4><ul><li><a href="/docs/feature-flags/">Feature flags</a></li></ul><h4>Automations</h4><ul><li><a href="/docs/agentic-automations/">Agentic automations</a></li></ul><h4>Project settings</h4><ul><li><a href="/docs/project-settings/">Project settings</a></li><li><a href="/docs/sessions/">Sessions</a></li></ul></aside>
       <article>
         <h1>Setting up Kestrel</h1>
         <p class="lead">Send your first events, check they arrive, and open a board built on them.</p>
@@ -64,6 +64,43 @@
 
 <h2>4. Explore your data</h2>
 <p>The last step offers <a href="/docs/board-templates/">board templates</a>: pick one and Kestrel builds a board of reports on your own events, asking only which of your events to use. You can open the guide again later to add another platform.</p>
+
+<h2 id="segment">Segment</h2>
+<p>Kestrel's <code>/v1/batch</code> API reads Segment's own message format, so your Segment calls need no reshaping. Kestrel has no listed destination in Segment's catalog yet; connect it with a <strong>Destination Function</strong>:</p>
+<ol>
+  <li>In Segment, open <strong>Connections › Catalog › Functions</strong> and create a new Destination Function.</li>
+  <li>Paste the code below, with your Kestrel address and project token as the function's settings.</li>
+  <li>Connect the function to the sources whose events Kestrel should receive.</li>
+</ol>
+<pre><code>async function send(event, settings) {
+  const res = await fetch(`${settings.kestrelUrl}/v1/batch`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${btoa(settings.projectToken + ":")}`,
+    },
+    body: JSON.stringify({ batch: [event], sentAt: new Date().toISOString() }),
+  });
+  if (res.status &gt;= 500) throw new RetryError(`Kestrel answered ${res.status}`);
+  if (!res.ok) throw new ValidationError(`Kestrel answered ${res.status}`);
+}
+async function onTrack(event, settings) { await send(event, settings); }
+async function onIdentify(event, settings) { await send(event, settings); }
+async function onPage(event, settings) { await send(event, settings); }
+async function onScreen(event, settings) { await send(event, settings); }
+async function onGroup(event, settings) { await send(event, settings); }</code></pre>
+<p>A 5xx answer is retried by Segment; any other error is not, because sending the same message again would fail the same way.</p>
+
+<h2 id="rudderstack">RudderStack</h2>
+<p>RudderStack's events use the same message format as Segment's, so Kestrel's <code>/v1/batch</code> reads them as they are. Until Kestrel is listed as a RudderStack destination, forward events with a destination that can make your own HTTP request (for example a webhook to a small relay of yours) and send them to <code>/v1/batch</code> as in the Segment example: each request a JSON object <code>{"batch": [ … ]}</code>, with your project token as the username of a Basic <code>Authorization</code> header.</p>
+<p>You can also skip the relay and send from your servers directly to <code>/v1/batch</code>, or use one of Kestrel's SDKs alongside RudderStack.</p>
+
+<h2 id="more-options">More options</h2>
+<ul>
+  <li><strong>Your data warehouse</strong> — BigQuery, Snowflake or Redshift: see <a href="/docs/warehouse-import/">Importing from a data warehouse</a>.</li>
+  <li><strong>Mixpanel's APIs</strong> — Kestrel answers Mixpanel's <code>/track</code>, <code>/engage</code>, <code>/groups</code> and <code>/import</code> at the same paths, with the same checks and replies. Code that already sends to Mixpanel moves by changing the host and the token.</li>
+  <li><strong>Any HTTP client</strong> — <code>/v1/batch</code> for live events and <code>/import</code> for history, described above under <em>From your servers or another tool</em>.</li>
+</ul>
       </article>
     </div>
   </main>

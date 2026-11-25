@@ -1,5 +1,5 @@
 <!-- title: Project settings -->
-<!-- summary: Time period settings that shape your charts: the start of the week, quarter and weekend. -->
+<!-- summary: Time period settings that shape your charts, and how Identity Merge joins a person's events. -->
 <p>Project settings apply to everyone in the project. Admins can change them in <strong>Project Settings › Overview</strong>.</p>
 
 <h2>Time period settings</h2>
@@ -20,3 +20,25 @@
   <li>The option applies when the chart is shown by day. Weekends are visible by default.</li>
 </ul>
 <p>Set the weekend to match your market — for example Friday and Saturday where that is the local weekend.</p>
+
+<h2 id="identity-merge">Identity Merge</h2>
+<p>People use your product before they sign in, and often on more than one device. Identity Merge joins those visits into one person, so a report counts them once and a funnel follows them from their first visit to their purchase. Kestrel offers two ID Merge APIs; you can see which one your project uses in <strong>Project Settings › Identity Merge</strong>.</p>
+<p>The API is chosen before any data arrives: in a new project, an Admin can switch between the two there. Once the first event has arrived it is fixed, because changing it would regroup the events already counted. Organization admins set the API new projects start with in <strong>Organization Settings › Identity Merge</strong>.</p>
+
+<h3 id="simplified-vs-original-id-merge">Simplified vs. Original ID Merge</h3>
+<table>
+  <tr><th></th><th>Simplified API (the default)</th><th>Original API</th></tr>
+  <tr><td>What joins a person's ids</td><td>Any event that carries both a device id (<code>$device_id</code>) and a user id (<code>$user_id</code>).</td><td>Only the special <code>$identify</code>, <code>$create_alias</code> and <code>$merge</code> events.</td></tr>
+  <tr><td>Anonymous events</td><td>All of a device's anonymous events, before and after sign-in, join the user it is seen with.</td><td>Join when <code>identify</code> links the device to the user.</td></tr>
+  <tr><td>Two signed-in users</td><td>Never merged: a user id always stays its own person.</td><td>Can be merged by <code>$merge</code> or <code>alias</code>.</td></tr>
+  <tr><td>Limit</td><td>No limit on a person's devices.</td><td>Up to 500 ids in one person.</td></tr>
+</table>
+<p>Choose the <strong>Simplified API</strong> unless your tracking already relies on <code>alias</code> or <code>$merge</code> — for example when you bring a project over from another tool that used them.</p>
+
+<h3 id="key-changes-from-the-original-api">Key changes from the Original API</h3>
+<ul>
+  <li><strong>No special events.</strong> Signing in is just your SDK's <code>identify(userId)</code>; it adds the user id to the events that follow, and the device and user are joined from there.</li>
+  <li><strong><code>alias</code> and <code>$merge</code> don't join people.</strong> Under the Simplified API they are kept as ordinary events.</li>
+  <li><strong>A shared device follows its latest user.</strong> If two people sign in on one device without your app calling <code>reset()</code> at sign-out, the device's anonymous events go to the user it was seen with last. Call <code>reset()</code> when someone signs out.</li>
+  <li><strong>The distinct id is derived.</strong> An event's distinct id is its user id when it has one, otherwise its device id.</li>
+</ul>

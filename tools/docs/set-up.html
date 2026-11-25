@@ -44,3 +44,40 @@
 
 <h2>4. Explore your data</h2>
 <p>The last step offers <a href="/docs/board-templates/">board templates</a>: pick one and Kestrel builds a board of reports on your own events, asking only which of your events to use. You can open the guide again later to add another platform.</p>
+
+<h2 id="segment">Segment</h2>
+<p>Kestrel's <code>/v1/batch</code> API reads Segment's own message format, so your Segment calls need no reshaping. Kestrel has no listed destination in Segment's catalog yet; connect it with a <strong>Destination Function</strong>:</p>
+<ol>
+  <li>In Segment, open <strong>Connections › Catalog › Functions</strong> and create a new Destination Function.</li>
+  <li>Paste the code below, with your Kestrel address and project token as the function's settings.</li>
+  <li>Connect the function to the sources whose events Kestrel should receive.</li>
+</ol>
+<pre><code>async function send(event, settings) {
+  const res = await fetch(`${settings.kestrelUrl}/v1/batch`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${btoa(settings.projectToken + ":")}`,
+    },
+    body: JSON.stringify({ batch: [event], sentAt: new Date().toISOString() }),
+  });
+  if (res.status &gt;= 500) throw new RetryError(`Kestrel answered ${res.status}`);
+  if (!res.ok) throw new ValidationError(`Kestrel answered ${res.status}`);
+}
+async function onTrack(event, settings) { await send(event, settings); }
+async function onIdentify(event, settings) { await send(event, settings); }
+async function onPage(event, settings) { await send(event, settings); }
+async function onScreen(event, settings) { await send(event, settings); }
+async function onGroup(event, settings) { await send(event, settings); }</code></pre>
+<p>A 5xx answer is retried by Segment; any other error is not, because sending the same message again would fail the same way.</p>
+
+<h2 id="rudderstack">RudderStack</h2>
+<p>RudderStack's events use the same message format as Segment's, so Kestrel's <code>/v1/batch</code> reads them as they are. Until Kestrel is listed as a RudderStack destination, forward events with a destination that can make your own HTTP request (for example a webhook to a small relay of yours) and send them to <code>/v1/batch</code> as in the Segment example: each request a JSON object <code>{"batch": [ … ]}</code>, with your project token as the username of a Basic <code>Authorization</code> header.</p>
+<p>You can also skip the relay and send from your servers directly to <code>/v1/batch</code>, or use one of Kestrel's SDKs alongside RudderStack.</p>
+
+<h2 id="more-options">More options</h2>
+<ul>
+  <li><strong>Your data warehouse</strong> — BigQuery, Snowflake or Redshift: see <a href="/docs/warehouse-import/">Importing from a data warehouse</a>.</li>
+  <li><strong>Mixpanel's APIs</strong> — Kestrel answers Mixpanel's <code>/track</code>, <code>/engage</code>, <code>/groups</code> and <code>/import</code> at the same paths, with the same checks and replies. Code that already sends to Mixpanel moves by changing the host and the token.</li>
+  <li><strong>Any HTTP client</strong> — <code>/v1/batch</code> for live events and <code>/import</code> for history, described above under <em>From your servers or another tool</em>.</li>
+</ul>
