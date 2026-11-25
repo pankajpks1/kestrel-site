@@ -62,6 +62,16 @@ DATEDIF(signup_date, TODAY(), "D")</code></pre>
   <li>Write lists in square brackets: <code>["a", "b"]</code>. Start a comment with <code>//</code>.</li>
 </ul>
 
+<h2 id="borrowed-properties">Borrowed properties</h2>
+<p>Sometimes the property you want to break an event down by was sent on a different event. A <strong>borrowed property</strong> copies it across: for example, break <em>Purchase</em> down by the <code>platform</code> that was sent on <em>App Opened</em>.</p>
+<ol>
+  <li>In the custom property's formula, type <code>.</code> to open the property list and choose <strong>Borrow Property...</strong>.</li>
+  <li>Pick the event to borrow from, then one of its properties.</li>
+  <li>Save. A borrowed property is shared with everyone in the project.</li>
+</ol>
+<p>For each event, Kestrel takes the value from the same person's most recent event of the chosen kind, at or before it, where the property is set, looking back up to 7 days. If there is no such event in those 7 days, the value is unset. A borrowed property stands on its own: it can't be combined with other properties or functions in the same formula.</p>
+<p>Only Admins and Owners can create borrowed properties, and a project can have up to 20.</p>
+
 <h2>Data type</h2>
 <p>The result's type — text, number, true / false, date or list — comes from the formula's outermost operation. You can change how a breakdown treats it from the breakdown's ⋮ menu › <strong>Data Type</strong>.</p>
 
